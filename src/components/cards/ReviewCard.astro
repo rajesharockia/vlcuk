@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Bilingual from '../Bilingual.astro';
+import { resolveImage } from '../../lib/images';
+import { meaningful } from '../../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'reviews'>;
+  /** Larger treatment used for the home page's featured review. */
+  feature?: boolean;
+}
+
+const { entry, feature = false } = Astro.props;
+const { title_en, title_ta, book_title_en, book_title_ta, author, translator, cover_image } =
+  entry.data;
+
+const cover = resolveImage(cover_image);
+const href = `/reviews/${entry.id}/`;
+// An em dash in `translator` means "not a translation" — omit the line.
+const translatorName = meaningful(translator);
+const coverWidth = feature ? 200 : 120;
+---
+
+<article
+  class={`grid gap-6 sm:gap-8 ${
+    feature
+      ? 'sm:grid-cols-[200px_1fr]'
+      : 'border-b border-[color:var(--color-rule)] py-8 sm:grid-cols-[120px_1fr]'
+  }`}
+>
+  <a href={href} class="block" tabindex="-1" aria-hidden="true">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt=""
+          widths={[coverWidth, coverWidth * 2]}
+          sizes={`${coverWidth}px`}
+          class="aspect-2/3 w-full border border-[color:var(--color-rule)] object-cover"
+          loading="lazy"
+        />
+      ) : (
+        /* Placeholder keeps the 2:3 book proportion when no cover is uploaded. */
+        <div
+          class="flex aspect-2/3 w-full items-center justify-center border border-[color:var(--color-rule)] bg-[color:var(--color-paper-sunk)]"
+        >
+          <span class="eyebrow px-2 text-center text-[0.6rem]">Vishnupuram</span>
+        </div>
+      )
+    }
+  </a>
+
+  <div class="max-w-[var(--measure)]">
+    <h3 class={feature ? 'text-[1.5rem] leading-snug font-medium sm:text-[1.9rem]' : 'text-[1.2rem] leading-snug font-medium'}>
+      <a href={href} class="link-title">
+        <Bilingual en={title_en} ta={title_ta} />
+      </a>
+    </h3>
+
+    {
+      (book_title_en || book_title_ta) && (
+        <p class="mt-2 text-[1rem] italic text-[color:var(--color-ink-muted)]">
+          <Bilingual en={book_title_en} ta={book_title_ta} />
+        </p>
+      )
+    }
+
+    <dl class="mt-4 space-y-1 text-[0.88rem] text-[color:var(--color-ink-faint)]">
+      <div class="flex gap-2">
+        <dt class="shrink-0"><Bilingual k="review.author" />:</dt>
+        <dd>{author}</dd>
+      </div>
+
+      {
+        translatorName && (
+          <div class="flex gap-2">
+            <dt class="shrink-0">
+              <Bilingual k="review.translator" />:
+            </dt>
+            <dd>{translatorName}</dd>
+          </div>
+        )
+      }
+    </dl>
+
+    <a href={href} class="link-accent mt-4 inline-block text-[0.85rem]">
+      <Bilingual k="common.readMore" />
+      <span aria-hidden="true"> →</span>
+    </a>
+  </div>
+</article>

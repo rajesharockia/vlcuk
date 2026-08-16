@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import EventCard from '../../components/cards/EventCard.astro';
+import { partitionEvents } from '../../lib/content';
+import { t } from '../../i18n/ui';
+
+const { upcoming, past } = partitionEvents(await getCollection('events'));
+
+// A `featured` event leads the page in full-width form — currently LitFest
+// London 2027. The rest follow as a dated list.
+const featured = upcoming.find((e) => e.data.featured);
+const restUpcoming = upcoming.filter((e) => e.id !== featured?.id);
+
+const intro = {
+  en: 'Readings, festivals, and conversations with writers and translators.',
+  ta: 'வாசிப்புகள், திருவிழாக்கள், எழுத்தாளர்கள் மற்றும் மொழிபெயர்ப்பாளர்களுடனான உரையாடல்கள்.',
+};
+---
+
+<BaseLayout title={t('nav.events').en} description={intro.en}>
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="nav.events" />
+      </h1>
+      <p class="mt-5 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+    </header>
+
+    {featured && <div class="mt-12"><EventCard entry={featured} feature /></div>}
+
+    {
+      restUpcoming.length > 0 && (
+        <section class="mt-16">
+          <h2 class="eyebrow border-b border-[color:var(--color-rule)] pb-3">
+            <Bilingual k="events.upcoming" />
+          </h2>
+          {restUpcoming.map((entry) => (
+            <EventCard entry={entry} />
+          ))}
+        </section>
+      )
+    }
+
+    {
+      past.length > 0 && (
+        <section class="mt-16">
+          <h2 class="eyebrow border-b border-[color:var(--color-rule)] pb-3">
+            <Bilingual k="events.past" />
+          </h2>
+          {past.map((entry) => (
+            <EventCard entry={entry} />
+          ))}
+        </section>
+      )
+    }
+
+    {
+      upcoming.length === 0 && past.length === 0 && (
+        <p class="py-16 text-[color:var(--color-ink-faint)]">
+          <Bilingual k="events.none" />
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

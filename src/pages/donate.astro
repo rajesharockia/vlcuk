@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Bilingual from '../components/Bilingual.astro';
+import { t } from '../i18n/ui';
+
+/*
+  Placeholder copy — written to be edited. Keep the `_en` / `_ta` pairing when
+  you rewrite it; if you only update one language, the other will still show,
+  but the toggle will look inconsistent.
+*/
+const appeal = {
+  lede: {
+    en: 'Vishnupuram UK is run by readers, for readers. There is no institution behind it and no ticket price at the door — only a circle of people who believe a literature is kept alive by being read aloud, argued over, and carried across languages.',
+    ta: 'விஷ்ணுபுரம் UK வாசகர்களால், வாசகர்களுக்காக நடத்தப்படுகிறது. இதன் பின்னால் எந்த நிறுவனமும் இல்லை; வாசலில் நுழைவுக் கட்டணமும் இல்லை — ஓர் இலக்கியம் உரக்க வாசிக்கப்படுவதாலும், விவாதிக்கப்படுவதாலும், மொழிகளைக் கடந்து கொண்டு செல்லப்படுவதாலும் உயிர்ப்புடன் இருக்கிறது என்று நம்பும் சிலரின் வட்டம் மட்டுமே.',
+  },
+  body: {
+    en: 'Your contribution goes towards hosting readings, bringing writers and translators to London, printing and posting books to members, and keeping this website running. Any amount helps, and every contribution is acknowledged.',
+    ta: 'உங்கள் பங்களிப்பு வாசிப்பு நிகழ்வுகளை நடத்தவும், எழுத்தாளர்களையும் மொழிபெயர்ப்பாளர்களையும் லண்டனுக்கு அழைக்கவும், உறுப்பினர்களுக்கு நூல்களை அச்சிட்டு அனுப்பவும், இந்த இணையதளத்தை இயக்கவும் பயன்படுகிறது. எவ்வளவு சிறிய தொகையும் உதவியாகும்; ஒவ்வொரு பங்களிப்பும் நன்றியுடன் ஏற்கப்படும்.',
+  },
+  thanks: {
+    en: 'Thank you for keeping the circle going.',
+    ta: 'இந்த வட்டம் தொடர்ந்து இயங்க உதவியதற்கு நன்றி.',
+  },
+};
+
+const methods = {
+  paypal: {
+    en: 'The quickest way to give, whether or not you have a PayPal account.',
+    ta: 'PayPal கணக்கு இருந்தாலும் இல்லாவிட்டாலும், நன்கொடை அளிக்க இதுவே விரைவான வழி.',
+  },
+  stripe: {
+    en: 'Pay securely by debit or credit card. No account needed.',
+    ta: 'டெபிட் அல்லது கிரெடிட் அட்டை மூலம் பாதுகாப்பாகச் செலுத்தலாம். கணக்கு தேவையில்லை.',
+  },
+  bank: {
+    en: 'For standing orders, or if you would rather not use a card service. UK accounts only.',
+    ta: 'நிரந்தர மாத நன்கொடைக்கு, அல்லது அட்டைச் சேவையைப் பயன்படுத்த விரும்பாதவர்களுக்கு. UK வங்கிக் கணக்குகளுக்கு மட்டும்.',
+  },
+};
+
+/*
+  Bank details are placeholders.
+  TODO: replace with real bank details before this page goes live.
+*/
+const bankDetails = [
+  { key: 'donate.bankAccountName', value: 'TODO: replace with real bank details' },
+  { key: 'donate.bankSortCode', value: 'TODO: replace with real bank details' },
+  { key: 'donate.bankAccountNumber', value: 'TODO: replace with real bank details' },
+  { key: 'donate.bankReference', value: 'TODO: replace with real bank details' },
+] as const;
+---
+
+<BaseLayout title={t('donate.title').en} description={appeal.lede.en}>
+  <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    {/* ------------------------------------------------------------ Appeal */}
+    <header class="border-b border-[color:var(--color-rule)] pb-10">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="donate.title" />
+      </h1>
+
+      <p class="mt-7 text-[1.15rem] leading-relaxed">
+        <Bilingual en={appeal.lede.en} ta={appeal.lede.ta} />
+      </p>
+
+      <p class="mt-5 text-[1.02rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={appeal.body.en} ta={appeal.body.ta} />
+      </p>
+    </header>
+
+    {/* --------------------------------------------------- Donation methods */}
+    <div class="mt-14 space-y-14">
+      {/* ------------------------------------------------------- PayPal */}
+      <section aria-labelledby="method-paypal">
+        <h2 id="method-paypal" class="text-[1.35rem] font-medium">
+          <Bilingual k="donate.paypal" />
+        </h2>
+
+        <p class="mt-3 max-w-[var(--measure)] text-[0.98rem] text-[color:var(--color-ink-muted)]">
+          <Bilingual en={methods.paypal.en} ta={methods.paypal.ta} />
+        </p>
+
+        {/* TODO: PayPal donation link */}
+        <a href="#" class="btn btn-primary mt-6">
+          <Bilingual k="donate.paypal" />
+        </a>
+      </section>
+
+      <hr />
+
+      {/* ------------------------------------------------------- Stripe */}
+      <section aria-labelledby="method-stripe">
+        <h2 id="method-stripe" class="text-[1.35rem] font-medium">
+          <Bilingual k="donate.stripe" />
+        </h2>
+
+        <p class="mt-3 max-w-[var(--measure)] text-[0.98rem] text-[color:var(--color-ink-muted)]">
+          <Bilingual en={methods.stripe.en} ta={methods.stripe.ta} />
+        </p>
+
+        {/* TODO: Stripe Payment Link */}
+        <a href="#" class="btn btn-primary mt-6">
+          <Bilingual k="donate.stripe" />
+        </a>
+      </section>
+
+      <hr />
+
+      {/* -------------------------------------------------- Bank transfer */}
+      <section aria-labelledby="method-bank">
+        <h2 id="method-bank" class="text-[1.35rem] font-medium">
+          <Bilingual k="donate.bank" />
+        </h2>
+
+        <p class="mt-3 max-w-[var(--measure)] text-[0.98rem] text-[color:var(--color-ink-muted)]">
+          <Bilingual en={methods.bank.en} ta={methods.bank.ta} />
+        </p>
+
+        <dl
+          class="mt-6 divide-y divide-[color:var(--color-rule)] border border-[color:var(--color-rule-strong)] bg-[color:var(--color-paper-deep)]"
+        >
+          {
+            bankDetails.map((row) => (
+              <div class="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-baseline sm:gap-6">
+                <dt class="eyebrow sm:w-44 sm:shrink-0">
+                  <Bilingual k={row.key} />
+                </dt>
+                {/* TODO: replace with real bank details */}
+                <dd class="font-mono text-[0.85rem] text-[color:var(--color-accent-deep)]">
+                  {row.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+    </div>
+
+    <p class="mt-16 border-t border-[color:var(--color-rule)] pt-8 text-[1.05rem] italic">
+      <Bilingual en={appeal.thanks.en} ta={appeal.thanks.ta} />
+    </p>
+  </div>
+</BaseLayout>

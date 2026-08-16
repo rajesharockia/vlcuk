@@ -1,0 +1,60 @@
+---
+/**
+ * Renders an English/Tamil pair so the site-wide language toggle can show one
+ * of them.
+ *
+ * The important behaviour is the fallback. When both languages are present,
+ * two elements are emitted, each tagged with `lang` and `data-lang`, and CSS
+ * hides the inactive one. When only one language is present, a single element
+ * is emitted with the correct `lang` but **no** `data-lang` — so it stays
+ * visible in both toggle states rather than leaving a blank space. That is the
+ * behaviour CONTRIBUTING.md promises editors: "fill that one and leave the
+ * other blank — the site will fall back gracefully."
+ *
+ * Pass either an explicit `en`/`ta` pair (for content) or a `k` UI key (for
+ * chrome), not both.
+ */
+import { pair } from '../lib/content';
+import { t, type UIKey } from '../i18n/ui';
+
+interface Props {
+  /** English text. */
+  en?: string;
+  /** Tamil text. */
+  ta?: string;
+  /** UI dictionary key — an alternative to passing `en`/`ta` directly. */
+  k?: UIKey;
+  /** Element to render. Defaults to a span. */
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+// Note: destructured without an explicit `as Props` cast on purpose. Astro
+// derives this component's public prop types from the `Props` interface above,
+// and casting here would erase them at the call site.
+const { en, ta, k, as: Tag = 'span', class: className } = Astro.props;
+
+const source = k ? t(k) : { en, ta };
+const value = pair(source.en, source.ta);
+---
+
+{
+  value.kind === 'both' && (
+    <>
+      <Tag lang="en" data-lang="en" class={className}>
+        {value.en}
+      </Tag>
+      <Tag lang="ta" data-lang="ta" class={className}>
+        {value.ta}
+      </Tag>
+    </>
+  )
+}
+{
+  /* Only one language available — show it regardless of the active toggle. */
+  value.kind === 'single' && (
+    <Tag lang={value.lang} class={className}>
+      {value.text}
+    </Tag>
+  )
+}

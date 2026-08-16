@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# The CMS admin is not useful to crawlers and requires a login.
+Disallow: /admin/
+
+Sitemap: https://vishnupuram.uk/sitemap-index.xml

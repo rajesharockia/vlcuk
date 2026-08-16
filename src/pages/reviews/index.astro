@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import ReviewCard from '../../components/cards/ReviewCard.astro';
+import { byNewest } from '../../lib/content';
+import { t } from '../../i18n/ui';
+
+const entries = byNewest(await getCollection('reviews'));
+
+const intro = {
+  en: 'Reviews of books written and translated by Tamil authors — the originals, and the versions that carry them into other languages.',
+  ta: 'தமிழ் எழுத்தாளர்களால் எழுதப்பட்ட, மொழிபெயர்க்கப்பட்ட நூல்களின் மதிப்புரைகள் — மூல நூல்களும், அவற்றைப் பிற மொழிகளுக்குக் கொண்டு செல்லும் பதிப்புகளும்.',
+};
+---
+
+<BaseLayout title={t('nav.reviews').en} description={intro.en}>
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="nav.reviews" />
+      </h1>
+      <p class="mt-5 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+    </header>
+
+    {
+      entries.length > 0 ? (
+        <div class="mt-4">
+          {entries.map((entry) => (
+            <ReviewCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="py-16 text-[color:var(--color-ink-faint)]">
+          <Bilingual k="common.empty" />
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

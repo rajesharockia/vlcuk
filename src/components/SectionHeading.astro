@@ -1,0 +1,34 @@
+---
+import Bilingual from './Bilingual.astro';
+import type { UIKey } from '../i18n/ui';
+
+interface Props {
+  /** UI key for the heading text. */
+  k: UIKey;
+  /** Optional "read all" link shown at the end of the rule. */
+  href?: string;
+  /** UI key for that link's label. */
+  linkKey?: UIKey;
+  as?: 'h1' | 'h2';
+}
+
+// Note: destructured without an explicit `as Props` cast on purpose. Astro
+// derives this component's public prop types from the `Props` interface above,
+// and casting here would erase them at the call site.
+const { k, href, linkKey = 'common.readAll', as: Tag = 'h2' } = Astro.props;
+---
+
+<div class="mb-8 flex items-baseline justify-between gap-6 border-b border-[color:var(--color-rule)] pb-3">
+  <Tag class="text-[1.35rem] font-medium sm:text-[1.6rem]">
+    <Bilingual k={k} />
+  </Tag>
+
+  {
+    href && (
+      <a href={href} class="link-accent shrink-0 text-[0.85rem] whitespace-nowrap">
+        <Bilingual k={linkKey} />
+        <span aria-hidden="true"> →</span>
+      </a>
+    )
+  }
+</div>

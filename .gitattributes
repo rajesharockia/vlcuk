@@ -1,0 +1,19 @@
+# Normalise line endings to LF in the repository.
+#
+# This repo has two editing paths that must agree (see CONTRIBUTING.md):
+# Decap CMS commits from the browser and always writes LF, while a
+# contributor editing Markdown on Windows would otherwise commit CRLF.
+# Without this, the next CMS edit of that file shows up as a whole-file
+# rewrite in the diff, and real changes become impossible to review.
+* text=auto eol=lf
+
+# Assets git should never try to normalise.
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.webp  binary
+*.avif  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary

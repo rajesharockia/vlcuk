@@ -1,0 +1,89 @@
+---
+/**
+ * Site-wide English / Tamil toggle.
+ *
+ * Sets `data-lang` and `lang` on <html>, which the two rules in global.css use
+ * to hide the inactive language. The choice is persisted to localStorage and
+ * re-applied by the inline script in BaseLayout before first paint, so there
+ * is no flash of the wrong language on reload.
+ */
+---
+
+<div class="flex items-center" role="group" aria-label="Language / மொழி">
+  <button
+    type="button"
+    data-lang-set="en"
+    lang="en"
+    class="lang-btn"
+    aria-pressed="true"
+  >
+    English
+  </button>
+  <span aria-hidden="true" class="mx-1 text-[color:var(--color-rule-strong)] sm:mx-1.5">/</span>
+  <button
+    type="button"
+    data-lang-set="ta"
+    lang="ta"
+    class="lang-btn"
+    aria-pressed="false"
+  >
+    தமிழ்
+  </button>
+</div>
+
+<style>
+  .lang-btn {
+    background: none;
+    border: 0;
+    padding: 0.25rem 0.1rem;
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--color-ink-faint);
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .lang-btn:hover {
+    color: var(--color-accent);
+  }
+
+  /* The active language is marked by aria-pressed, so the styling follows the
+     accessibility state rather than duplicating it in a class. */
+  .lang-btn[aria-pressed='true'] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'vp-lang';
+
+  function apply(lang: 'en' | 'ta', persist: boolean) {
+    const root = document.documentElement;
+    root.dataset.lang = lang;
+    root.lang = lang;
+
+    if (persist) {
+      try {
+        localStorage.setItem(STORAGE_KEY, lang);
+      } catch {
+        // Private browsing or blocked storage — the toggle still works for
+        // this page view, it just won't be remembered.
+      }
+    }
+
+    for (const button of document.querySelectorAll<HTMLButtonElement>('[data-lang-set]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.langSet === lang));
+    }
+  }
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-lang-set]')) {
+    button.addEventListener('click', () => {
+      apply(button.dataset.langSet === 'ta' ? 'ta' : 'en', true);
+    });
+  }
+
+  // Sync the buttons with whatever the pre-paint script in BaseLayout chose.
+  apply(document.documentElement.dataset.lang === 'ta' ? 'ta' : 'en', false);
+</script>

@@ -1,0 +1,31 @@
+---
+/**
+ * The invitation to support Vishnupuram, shown on the home page. The header
+ * and footer carry a compact version of the same link, so the invitation is
+ * present on every page of the site.
+ */
+import Bilingual from './Bilingual.astro';
+
+const appeal = {
+  en: 'Vishnupuram UK is run by readers, for readers. Contributions help us host events, invite writers and translators, and keep this literature alive far from where it was written.',
+  ta: 'விஷ்ணுபுரம் UK வாசகர்களால், வாசகர்களுக்காக நடத்தப்படுகிறது. உங்கள் பங்களிப்பு நிகழ்வுகளை நடத்தவும், எழுத்தாளர்களையும் மொழிபெயர்ப்பாளர்களையும் அழைக்கவும், இந்த இலக்கியத்தை அது எழுதப்பட்ட மண்ணிலிருந்து வெகு தொலைவிலும் உயிர்ப்புடன் வைத்திருக்கவும் உதவுகிறது.',
+};
+---
+
+<section class="border-y border-[color:var(--color-rule-strong)] bg-[color:var(--color-accent-wash)]">
+  <div class="mx-auto flex max-w-6xl flex-col gap-7 px-5 py-14 sm:px-8 md:flex-row md:items-center md:justify-between md:gap-16">
+    <div class="max-w-[var(--measure)]">
+      <h2 class="text-[1.5rem] leading-tight font-medium sm:text-[1.9rem]">
+        <Bilingual k="donate.title" />
+      </h2>
+      <p class="mt-4 text-[1rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={appeal.en} ta={appeal.ta} />
+      </p>
+    </div>
+
+    <a href="/donate/" class="btn btn-primary shrink-0 self-start md:self-auto">
+      <Bilingual k="donate.cta" />
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

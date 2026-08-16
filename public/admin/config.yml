@@ -1,0 +1,90 @@
+# Decap CMS configuration for Vishnupuram UK
+# Lives at: public/admin/config.yml  (served at /admin/config.yml)
+# Field names here MUST match the Astro content-collection schemas exactly.
+
+backend:
+  name: git-gateway
+  branch: main            # deploy branch; Netlify Git Gateway commits here
+
+# Uncomment for local editing without deploying (run: npx decap-server)
+# local_backend: true
+
+media_folder: "src/assets/images"      # where uploaded files are committed
+public_folder: "/src/assets/images"    # how the site references them
+
+# Editors see a friendly UI; every change is a Git commit / PR behind the scenes.
+publish_mode: editorial_workflow
+
+collections:
+  # ---------------------------------------------------------------
+  - name: "discussions"
+    label: "Weekly Discussions"
+    label_singular: "Discussion"
+    folder: "src/content/discussions"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title_en", label: "Title (English)", widget: "string" }
+      - { name: "title_ta", label: "Title (Tamil)", widget: "string", required: false }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: "summary_en", label: "Summary (English)", widget: "text", required: false }
+      - { name: "summary_ta", label: "Summary (Tamil)", widget: "text", required: false }
+      - { name: "image", label: "Image", widget: "image", required: false }
+      - { name: "body", label: "Body", widget: "markdown" }
+
+  # ---------------------------------------------------------------
+  - name: "events"
+    label: "Events"
+    label_singular: "Event"
+    folder: "src/content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title_en", label: "Title (English)", widget: "string" }
+      - { name: "title_ta", label: "Title (Tamil)", widget: "string", required: false }
+      - { name: "date", label: "Start date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: "end_date", label: "End date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: "status", label: "Status", widget: "select", options: ["upcoming", "past"], default: "upcoming" }
+      - { name: "venue_en", label: "Venue (English)", widget: "string", required: false }
+      - { name: "venue_ta", label: "Venue (Tamil)", widget: "string", required: false }
+      - { name: "featured", label: "Feature on home page", widget: "boolean", default: false }
+      - { name: "image", label: "Image", widget: "image", required: false }
+      - { name: "summary_en", label: "Summary (English)", widget: "text", required: false }
+      - { name: "summary_ta", label: "Summary (Tamil)", widget: "text", required: false }
+      - { name: "body", label: "Body", widget: "markdown" }
+
+  # ---------------------------------------------------------------
+  - name: "reviews"
+    label: "Book Reviews"
+    label_singular: "Review"
+    folder: "src/content/reviews"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title_en", label: "Review title (English)", widget: "string" }
+      - { name: "title_ta", label: "Review title (Tamil)", widget: "string", required: false }
+      - { name: "book_title_en", label: "Book title (English)", widget: "string", required: false }
+      - { name: "book_title_ta", label: "Book title (Tamil)", widget: "string", required: false }
+      - { name: "author", label: "Author", widget: "string" }
+      - { name: "translator", label: "Translator", widget: "string", required: false }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: "cover_image", label: "Cover image", widget: "image", required: false }
+      - { name: "reviewer", label: "Reviewer", widget: "string", required: false }
+      - { name: "body", label: "Body", widget: "markdown" }
+
+  # ---------------------------------------------------------------
+  - name: "blog"
+    label: "Readers' Conversations"
+    label_singular: "Post"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title_en", label: "Title (English)", widget: "string" }
+      - { name: "title_ta", label: "Title (Tamil)", widget: "string", required: false }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: "author", label: "Author", widget: "string", required: false }
+      - { name: "summary_en", label: "Summary (English)", widget: "text", required: false }
+      - { name: "summary_ta", label: "Summary (Tamil)", widget: "text", required: false }
+      - { name: "allow_responses", label: "Allow reader responses", widget: "boolean", default: true }
+      - { name: "body", label: "Body", widget: "markdown" }

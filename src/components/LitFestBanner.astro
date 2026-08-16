@@ -1,0 +1,318 @@
+---
+/**
+ * Banner for the Living Tamil LitFest London page.
+ *
+ * The USA festival's site uses an illustrated skyline. This is the London
+ * counterpart: a hand-drawn silhouette running Tower Bridge → St Paul's →
+ * the Gherkin → the Shard → the Srivilliputhur gopuram → the London Eye →
+ * Elizabeth Tower and the Palace of Westminster.
+ *
+ * The gopuram sits at the centre and is the only element drawn in the accent
+ * colour — the Tamil tower standing among the London ones is the whole idea of
+ * the festival, so it carries the single spot of colour the site's palette
+ * allows.
+ *
+ * Inline SVG rather than a raster image: it stays sharp at any width, costs no
+ * extra request, and picks up the palette's CSS variables directly.
+ */
+
+// The London Eye's spokes and capsules, generated rather than hand-listed.
+// cy is set so the rim's stroke lands on the ground line rather than below it.
+const EYE = { cx: 1052, cy: 231, r: 104 };
+const spokes = Array.from({ length: 18 }, (_, i) => {
+  const angle = (i / 18) * Math.PI * 2;
+  return {
+    x: EYE.cx + Math.cos(angle) * EYE.r,
+    y: EYE.cy + Math.sin(angle) * EYE.r,
+  };
+});
+const capsules = Array.from({ length: 18 }, (_, i) => {
+  const angle = (i / 18) * Math.PI * 2 + Math.PI / 18;
+  return {
+    x: EYE.cx + Math.cos(angle) * EYE.r,
+    y: EYE.cy + Math.sin(angle) * EYE.r,
+  };
+});
+
+// Pinnacles along the roofline of the Palace of Westminster.
+const pinnacles = Array.from({ length: 11 }, (_, i) => 1272 + i * 20);
+---
+
+<div class="litfest-banner">
+  <svg
+    viewBox="0 0 1600 400"
+    role="img"
+    aria-labelledby="litfest-banner-title litfest-banner-desc"
+    preserveAspectRatio="xMidYMax meet"
+  >
+    <title id="litfest-banner-title">Living Tamil LitFest London</title>
+    <desc id="litfest-banner-desc">
+      An illustrated skyline showing Tower Bridge, St Paul's Cathedral, 30 St Mary Axe, The Shard,
+      the Srivilliputhur temple gopuram, the London Eye, and the Elizabeth Tower with the Palace of
+      Westminster.
+    </desc>
+
+    <g class="skyline">
+      {/*
+        The London landmarks are drawn on a baseline of y=340 and then dropped
+        onto the horizon (y=384) as one group, so they all stand on the same
+        ground line as the gopuram instead of floating above it.
+      */}
+      <g class="london" transform="translate(0, 44)">
+      {/* ---------------------------------------------------- Tower Bridge */}
+      <g>
+        {/* suspension chains out to the banks */}
+        <path d="M0 300 Q 60 296 96 232" class="line" />
+        {/* The eastern chain and deck stop short of St Paul's, which begins at
+            x=326 — otherwise the bridge appears to run through the cathedral. */}
+        <path d="M266 232 Q 292 296 314 322" class="line" />
+        {/* deck */}
+        <rect x="0" y="330" width="318" height="10" />
+        {/* north tower */}
+        <rect x="70" y="196" width="56" height="144" />
+        <path d="M70 196 h56 l-10 -30 h-36 z" />
+        <path d="M98 166 v-34" class="line" />
+        {/* south tower */}
+        <rect x="238" y="196" width="56" height="144" />
+        <path d="M238 196 h56 l-10 -30 h-36 z" />
+        <path d="M266 166 v-34" class="line" />
+        {/* high walkway */}
+        <rect x="126" y="212" width="112" height="9" />
+        <rect x="126" y="238" width="112" height="6" />
+        {/* central suspension curve */}
+        <path d="M126 246 Q 182 292 238 246" class="line" />
+      </g>
+
+      {/* ------------------------------------------------ St Paul's Cathedral */}
+      <g>
+        {/* nave */}
+        <rect x="326" y="304" width="160" height="36" />
+        <g class="line-thin">
+          <path d="M338 316 v16 M352 316 v16 M366 316 v16 M446 316 v16 M460 316 v16 M474 316 v16" />
+        </g>
+
+        {/* west towers, each with a small domed cap */}
+        <rect x="330" y="262" width="28" height="46" />
+        <path d="M330 262 a14 13 0 0 1 28 0 z" />
+        <path d="M344 249 v-13" class="line" />
+        <rect x="454" y="262" width="28" height="46" />
+        <path d="M454 262 a14 13 0 0 1 28 0 z" />
+        <path d="M468 249 v-13" class="line" />
+
+        {/* colonnaded drum */}
+        <rect x="380" y="244" width="52" height="64" />
+        <g class="line-thin">
+          <path d="M388 256 v44 M398 256 v44 M408 256 v44 M418 256 v44 M428 256 v44" />
+        </g>
+
+        {/* dome, set slightly wider than the drum it sits on */}
+        <path d="M374 246 a32 38 0 0 1 64 0 z" />
+
+        {/* lantern and finial */}
+        <rect x="399" y="180" width="14" height="28" />
+        <path d="M399 180 h14 l-7 -13 z" />
+        <path d="M406 167 v-13" class="line" />
+      </g>
+
+      {/* -------------------------------------------- 30 St Mary Axe (Gherkin) */}
+      <path d="M500 340 Q 496 268 522 214 Q 548 268 544 340 z" />
+      <path d="M502 300 h40 M500 322 h44 M508 268 h28" class="line-thin" />
+
+      {/* ------------------------------------------------------- The Shard */}
+      <path d="M578 340 L 590 178 L 604 154 L 616 186 L 628 340 z" />
+      <path d="M590 178 L 604 340 M604 154 L 604 340" class="line-thin" />
+      </g>
+      {/* ------------------------------- (London landmarks continue below) */}
+
+      {/* ================================================================
+           Srivilliputhur gopuram — the centrepiece, in the accent colour.
+           Eleven tapering tiers over a plinth, closing in a barrel-vaulted
+           crown with five kalasams.
+         ================================================================ */}
+      <g class="gopuram">
+        {/* plinth */}
+        <rect x="688" y="356" width="224" height="28" />
+        <rect x="700" y="340" width="200" height="18" />
+
+        {/* tiers: each slightly narrower and shorter than the one below */}
+        <rect x="706" y="308" width="188" height="34" />
+        <rect x="700" y="300" width="200" height="10" />
+
+        <rect x="716" y="272" width="168" height="30" />
+        <rect x="710" y="264" width="180" height="10" />
+
+        <rect x="726" y="238" width="148" height="28" />
+        <rect x="720" y="231" width="160" height="9" />
+
+        <rect x="735" y="207" width="130" height="26" />
+        <rect x="729" y="200" width="142" height="9" />
+
+        <rect x="744" y="178" width="112" height="24" />
+        <rect x="738" y="172" width="124" height="8" />
+
+        <rect x="752" y="152" width="96" height="22" />
+        <rect x="746" y="146" width="108" height="8" />
+
+        <rect x="760" y="128" width="80" height="20" />
+        <rect x="754" y="122" width="92" height="8" />
+
+        {/* barrel-vaulted crown (shala) */}
+        <path d="M766 122 v-26 a34 26 0 0 1 68 0 v26 z" />
+        <rect x="758" y="90" width="84" height="8" />
+
+        {/* five kalasams along the crown */}
+        <g class="kalasam">
+          <path d="M772 90 v-12 M772 78 a5 5 0 1 1 0.1 0 M772 66 v-8" />
+          <path d="M787 90 v-16 M787 74 a5 5 0 1 1 0.1 0 M787 62 v-9" />
+          <path d="M800 90 v-20 M800 70 a6 6 0 1 1 0.1 0 M800 57 v-11" />
+          <path d="M813 90 v-16 M813 74 a5 5 0 1 1 0.1 0 M813 62 v-9" />
+          <path d="M828 90 v-12 M828 78 a5 5 0 1 1 0.1 0 M828 66 v-8" />
+        </g>
+
+        {/* niche lines suggesting the tiered sculpture bands */}
+        <g class="line-thin">
+          <path d="M726 316 h148 M736 280 h128 M745 246 h110 M754 215 h92 M762 186 h76" />
+        </g>
+      </g>
+
+      {/* London landmarks resume, on the same dropped baseline. */}
+      <g class="london" transform="translate(0, 44)">
+      {/* ------------------------------------------------------ London Eye */}
+      <g>
+        {/* A-frame support */}
+        <path d="M1006 340 L 1052 231 L 1098 340" class="line" />
+        <rect x="990" y="332" width="124" height="8" />
+        {/* rim */}
+        <circle cx={EYE.cx} cy={EYE.cy} r={EYE.r} class="ring" />
+        <circle cx={EYE.cx} cy={EYE.cy} r={EYE.r - 9} class="ring-thin" />
+        {/* spokes */}
+        <g class="line-thin">
+          {spokes.map((p) => <path d={`M${EYE.cx} ${EYE.cy} L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`} />)}
+        </g>
+        {/* capsules */}
+        {capsules.map((p) => <circle cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="6" />)}
+        <circle cx={EYE.cx} cy={EYE.cy} r="10" />
+      </g>
+
+      {/* -------------------------------- Elizabeth Tower and Westminster */}
+      <g>
+        {/* Palace of Westminster */}
+        <rect x="1262" y="290" width="230" height="50" />
+        <g>{pinnacles.map((x) => <path d={`M${x} 290 h10 l-5 -20 z`} />)}</g>
+        <g class="line-thin">
+          <path d="M1272 306 v22 M1300 306 v22 M1328 306 v22 M1356 306 v22 M1384 306 v22 M1412 306 v22 M1440 306 v22 M1468 306 v22" />
+        </g>
+
+        {/* Victoria Tower */}
+        <rect x="1496" y="216" width="72" height="124" />
+        <rect x="1490" y="206" width="84" height="12" />
+        <path d="M1500 206 h10 l-5 -18 z M1520 206 h10 l-5 -22 z M1540 206 h10 l-5 -22 z M1560 206 h10 l-5 -18 z" />
+
+        {/* Elizabeth Tower (Big Ben) */}
+        <rect x="1196" y="196" width="54" height="144" />
+        <rect x="1190" y="186" width="66" height="12" />
+        <circle cx="1223" cy="222" r="17" class="clock" />
+        <path d="M1223 222 v-10 M1223 222 l7 5" class="hands" />
+        {/* belfry and spire */}
+        <rect x="1200" y="154" width="46" height="32" />
+        <path d="M1196 154 h54 l-27 -34 z" />
+        <path d="M1223 120 v-24" class="line" />
+        <circle cx="1223" cy="94" r="4" />
+      </g>
+      </g>
+      {/* --------------------------------------------- end London landmarks */}
+
+      {/* horizon */}
+      <path d="M0 384 H1600" class="horizon" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .litfest-banner {
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--color-paper-deep);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  /* Always full-bleed at the artwork's own 4:1 ratio. Capping the height
+     instead would letterbox the skyline and leave gaps at either side on
+     short viewports. */
+  .litfest-banner svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* London landmarks: a single muted ink silhouette. */
+  .skyline {
+    fill: var(--color-ink);
+    fill-opacity: 0.82;
+  }
+
+  .skyline .line {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-opacity: 0.82;
+    stroke-width: 7;
+    stroke-linecap: round;
+  }
+
+  .skyline .line-thin {
+    fill: none;
+    stroke: var(--color-paper-deep);
+    stroke-width: 2.5;
+    stroke-opacity: 0.55;
+  }
+
+  .skyline .ring {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-opacity: 0.82;
+    stroke-width: 9;
+  }
+
+  .skyline .ring-thin {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-opacity: 0.35;
+    stroke-width: 2;
+  }
+
+  .skyline .clock {
+    fill: var(--color-paper-deep);
+  }
+
+  .skyline .hands {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .skyline .horizon {
+    fill: none;
+    stroke: var(--color-rule-strong);
+    stroke-width: 2;
+  }
+
+  /* The one spot of colour: the Tamil tower among the London ones. */
+  .gopuram {
+    fill: var(--color-accent);
+    fill-opacity: 1;
+  }
+
+  .gopuram .line-thin {
+    stroke: var(--color-paper-deep);
+    stroke-opacity: 0.5;
+  }
+
+  .gopuram .kalasam {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+  }
+
+</style>

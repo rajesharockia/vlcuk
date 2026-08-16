@@ -1,0 +1,48 @@
+---
+/**
+ * Shared shell for every detail page: a centred column, a titled header, and
+ * a `.prose` region for the rendered Markdown body.
+ *
+ * The body slot receives the output of `render(entry)`, whose top-level blocks
+ * have already been tagged with `lang` / `data-lang` by the language-sections
+ * plugin, so the toggle works inside article text as well as around it.
+ */
+import Bilingual from './Bilingual.astro';
+import type { UIKey } from '../i18n/ui';
+
+interface Props {
+  title_en: string;
+  title_ta?: string;
+  /** Where the "back" link points, e.g. `/reviews/`. */
+  backHref: string;
+  backKey: UIKey;
+}
+
+const { title_en, title_ta, backHref, backKey } = Astro.props;
+---
+
+<article class="mx-auto max-w-3xl px-5 py-12 sm:px-8 sm:py-16">
+  <a href={backHref} class="link-accent text-[0.85rem]">
+    <span aria-hidden="true">← </span>
+    <Bilingual k={backKey} />
+  </a>
+
+  <header class="mt-8 border-b border-[color:var(--color-rule)] pb-8">
+    <!-- Meta line: dates, venue, author — supplied by the page. -->
+    <slot name="eyebrow" />
+
+    <h1 class="mt-3 text-[1.9rem] leading-tight font-medium sm:text-[2.6rem]">
+      <Bilingual en={title_en} ta={title_ta} />
+    </h1>
+
+    <slot name="meta" />
+  </header>
+
+  <slot name="lede" />
+
+  <div class="prose mt-10">
+    <slot />
+  </div>
+
+  <slot name="after" />
+</article>

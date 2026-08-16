@@ -1,0 +1,110 @@
+---
+/**
+ * The site logo, in the reader's chosen language.
+ *
+ * There are two artworks with very different proportions: the English mark is
+ * square (4160×4160 — emblem above a two-line wordmark), the Tamil one is a
+ * wide strip (300×106). Sizing either by width alone would make one of them
+ * dwarf the other, so each variant below constrains **both** max-width and
+ * max-height. The browser then scales each image down to fit that box while
+ * keeping its own aspect ratio, which keeps the two visually comparable and —
+ * importantly — stops the header changing height when the language is toggled.
+ *
+ * Both images are in the DOM and the language toggle shows one, exactly like
+ * the rest of the bilingual content.
+ */
+import { Image } from 'astro:assets';
+import logoEn from '../assets/vishnupuram-logo-en.jpg';
+import logoTa from '../assets/vishnupuram-logo-ta.jpg';
+
+interface Props {
+  /** Which size box to fit the logo into. */
+  variant?: 'header' | 'hero' | 'footer';
+  /** Load without waiting — used for the header and hero. */
+  eager?: boolean;
+}
+
+const { variant = 'header', eager = false } = Astro.props;
+
+/**
+ * Each box is max-height × max-width; the browser fits the image inside it.
+ *
+ * For the header the width is set to height × 2.83 — the Tamil logo's own
+ * aspect ratio — so both images come out at exactly the same height. That
+ * matters in persistent chrome: unequal heights would make the header jump
+ * every time a reader flips the language.
+ *
+ * The English artwork is square with its wordmark stacked under the emblem, so
+ * at header size it necessarily reads as a mark rather than as readable text.
+ * The hero and footer show it large enough for the wordmark to be legible.
+ */
+const BOX = {
+  // 272 = 96 × 2.83, so both marks land at 96px tall on wider screens. The
+  // small-screen step stays modest: at 320px the logo has to share the row
+  // with the language toggle and the menu button.
+  header: 'max-h-[40px] max-w-[113px] sm:max-h-[96px] sm:max-w-[272px]',
+  // Hero and footer allow the wide Tamil mark more width, so it doesn't read
+  // as much smaller than the square English one sitting in the same slot.
+  // The hero is the one place large enough for the English wordmark to be
+  // properly legible, so it is given real size — stepped down on small screens
+  // so it doesn't swallow the phone viewport.
+  hero: 'max-h-[150px] max-w-[330px] sm:max-h-[240px] sm:max-w-[560px]',
+  footer: 'max-h-[88px] max-w-[230px]',
+} as const;
+
+// Rendered widths per variant, so Astro emits sensibly sized sources.
+const WIDTHS = {
+  header: { en: [96, 192, 288], ta: [272, 544] },
+  // Tamil tops out at 900 — the source artwork's own width, so it is never
+  // upscaled past what it actually contains.
+  hero: { en: [240, 480, 720], ta: [560, 900] },
+  footer: { en: [88, 176, 264], ta: [230, 460] },
+} as const;
+
+const box = BOX[variant];
+const widths = WIDTHS[variant];
+const loading = eager ? 'eager' : 'lazy';
+---
+
+<Image
+  src={logoEn}
+  alt="Vishnupuram Literary Circle UK"
+  widths={[...widths.en]}
+  sizes={`${widths.en[0]}px`}
+  class:list={['site-logo', box]}
+  loading={loading}
+  lang="en"
+  data-lang="en"
+/>
+
+<Image
+  src={logoTa}
+  alt="விஷ்ணுபுரம் இலக்கிய வட்டம்"
+  widths={[...widths.ta]}
+  sizes={`${widths.ta[0]}px`}
+  class:list={['site-logo', box]}
+  loading={loading}
+  lang="ta"
+  data-lang="ta"
+/>
+
+<style>
+  /*
+    Both logos are JPEGs on a white ground, which shows as a bright rectangle
+    against the site's warm paper. Multiply blending drops that white into the
+    background while leaving the black tree and orange sun untouched, so the
+    mark sits on the page instead of on a white card.
+  */
+  .site-logo {
+    height: auto;
+    width: auto;
+    mix-blend-mode: multiply;
+  }
+
+  /* Blending needs an opaque backdrop; without it the mark can wash out. */
+  @supports not (mix-blend-mode: multiply) {
+    .site-logo {
+      mix-blend-mode: normal;
+    }
+  }
+</style>

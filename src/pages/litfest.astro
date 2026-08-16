@@ -1,0 +1,406 @@
+---
+import { Image } from 'astro:assets';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LitFestBanner from '../components/LitFestBanner.astro';
+import Bilingual from '../components/Bilingual.astro';
+import litfestLogo from '../assets/litfest-logo.jpg';
+import { t } from '../i18n/ui';
+
+/*
+  Living Tamil LitFest — London 2027.
+
+  The European edition of the festival the Vishnupuram Literary Circle runs in
+  the USA (livingtamillitfest.org). This page mirrors that site's structure —
+  an illustrated banner, an overview, a programme, and an advisory committee —
+  adapted for London and for readers across the UK and Europe.
+
+  Nothing here asserts a fact that has not been confirmed. Dates, venue,
+  speakers, session titles, and attendance figures are all rendered as
+  "to be announced" placeholders. Fill them in as they are settled.
+*/
+
+const FESTIVAL_TAGLINE = {
+  en: 'Bringing modern Tamil literature to the world',
+  ta: 'நவீன தமிழ் இலக்கியத்தை உலகிற்குக் கொண்டு செல்கிறோம்',
+};
+
+const intro = {
+  lede: {
+    en: 'Living Tamil LitFest comes to London — the festival’s first European edition, bringing modern Tamil literature to readers across the United Kingdom and Europe.',
+    ta: 'லிவிங் தமிழ் இலக்கியத் திருவிழா லண்டனுக்கு வருகிறது — இத்திருவிழாவின் முதல் ஐரோப்பியப் பதிப்பு, நவீன தமிழ் இலக்கியத்தை ஐக்கிய இராச்சியம் மற்றும் ஐரோப்பா முழுவதிலுமுள்ள வாசகர்களிடம் கொண்டு செல்கிறது.',
+  },
+  body: {
+    en: 'Over two days, writers, translators, publishers, and readers gather for readings, conversations, and close discussion of the Tamil writing being done now. Sessions run in Tamil and English, and translated work sits at the centre of the programme rather than at its edges — the point of the festival is that a literature travels when it is carried across languages.',
+    ta: 'இரண்டு நாட்களில், எழுத்தாளர்கள், மொழிபெயர்ப்பாளர்கள், பதிப்பாளர்கள், வாசகர்கள் ஒன்றுகூடி வாசிப்புகள், உரையாடல்கள், இன்று எழுதப்படும் தமிழ் இலக்கியம் குறித்த நுட்பமான விவாதங்களில் ஈடுபடுகிறார்கள். அமர்வுகள் தமிழிலும் ஆங்கிலத்திலும் நடைபெறும்; மொழிபெயர்ப்புப் படைப்புகள் நிகழ்ச்சி நிரலின் ஓரத்தில் அல்ல, மையத்தில் இடம்பெறும் — ஓர் இலக்கியம் மொழிகளைக் கடந்து செல்லும்போதுதான் பயணிக்கிறது என்பதே இத்திருவிழாவின் நோக்கம்.',
+  },
+};
+
+/*
+  Overview cards.
+
+  TODO: replace every `value` below with the confirmed figure once known.
+  They are deliberately not numbers yet — no attendance, speaker, or session
+  count has been fixed for London.
+*/
+const overview = [
+  {
+    label: { en: 'Readers expected', ta: 'எதிர்பார்க்கப்படும் வாசகர்கள்' },
+    note: {
+      en: 'Attendees from across the UK, Europe, and beyond.',
+      ta: 'ஐக்கிய இராச்சியம், ஐரோப்பா மற்றும் பிற நாடுகளிலிருந்து பங்கேற்பாளர்கள்.',
+    },
+  },
+  {
+    label: { en: 'Speakers', ta: 'உரையாற்றுபவர்கள்' },
+    note: {
+      en: 'Writers, poets, translators, scholars, and publishers.',
+      ta: 'எழுத்தாளர்கள், கவிஞர்கள், மொழிபெயர்ப்பாளர்கள், ஆய்வாளர்கள், பதிப்பாளர்கள்.',
+    },
+  },
+  {
+    label: { en: 'Discussion sessions', ta: 'கலந்துரையாடல் அமர்வுகள்' },
+    note: {
+      en: 'Readings, panels, and close discussion across two days.',
+      ta: 'இரண்டு நாட்களில் வாசிப்புகள், கலந்துரையாடல்கள், நுட்பமான விவாதங்கள்.',
+    },
+  },
+  {
+    label: { en: 'Literary works', ta: 'இலக்கியப் படைப்புகள்' },
+    note: {
+      en: 'Novels, short fiction, poetry, and translations under discussion.',
+      ta: 'விவாதிக்கப்படும் புதினங்கள், சிறுகதைகள், கவிதைகள், மொழிபெயர்ப்புகள்.',
+    },
+  },
+  {
+    label: { en: 'Venue', ta: 'இடம்' },
+    note: {
+      en: 'A central London venue, with travel and stay notes to follow.',
+      ta: 'லண்டன் நகர மையத்தில் ஓர் இடம்; பயணம் மற்றும் தங்குமிட விவரங்கள் பின்னர்.',
+    },
+  },
+  {
+    label: { en: 'Meet the authors', ta: 'எழுத்தாளர்களைச் சந்திக்க' },
+    note: {
+      en: 'Signings and open conversation between sessions.',
+      ta: 'அமர்வுகளுக்கு இடையே கையொப்பமிடல், திறந்த உரையாடல்.',
+    },
+  },
+];
+
+/*
+  Programme placeholders.
+
+  TODO: replace each slot with the real session title, speaker, and time.
+  The two-day shape matches the existing LitFest event entry; adjust if the
+  festival runs longer.
+*/
+const programme = [
+  {
+    day: { en: 'Day One', ta: 'முதல் நாள்' },
+    slots: [
+      { en: 'Opening and welcome', ta: 'தொடக்கமும் வரவேற்பும்' },
+      { en: 'Reading', ta: 'வாசிப்பு' },
+      { en: 'Panel: translation', ta: 'கலந்துரையாடல்: மொழிபெயர்ப்பு' },
+      { en: 'In conversation', ta: 'உரையாடல்' },
+    ],
+  },
+  {
+    day: { en: 'Day Two', ta: 'இரண்டாம் நாள்' },
+    slots: [
+      { en: 'Reading', ta: 'வாசிப்பு' },
+      { en: 'Panel: the contemporary novel', ta: 'கலந்துரையாடல்: சமகாலப் புதினம்' },
+      { en: 'Poetry', ta: 'கவிதை' },
+      { en: 'Closing session', ta: 'நிறைவு அமர்வு' },
+    ],
+  },
+];
+
+/*
+  Advisory committee.
+
+  Jeyamohan only, as instructed. TODO: expand this description, and add
+  further advisors here if and when they are confirmed.
+*/
+const advisors = [
+  {
+    name: { en: 'Jeyamohan', ta: 'ஜெயமோகன்' },
+    role: 'litfest.advisor',
+    bio: {
+      en: 'Writer, novelist, and critic, and the convenor of the Vishnupuram Literary Circle. His fiction and criticism range across the classical Tamil tradition and the modern novel.',
+      ta: 'எழுத்தாளர், புதின ஆசிரியர், விமர்சகர்; விஷ்ணுபுரம் இலக்கிய வட்டத்தின் அமைப்பாளர். அவரது புனைவும் விமர்சனமும் செவ்வியல் தமிழ் மரபு முதல் நவீனப் புதினம் வரை பரவியுள்ளன.',
+    },
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Living Tamil LitFest London 2027"
+  description="The first European edition of Living Tamil LitFest, bringing modern Tamil literature to readers across the UK and Europe."
+>
+  <LitFestBanner />
+
+  {/* ------------------------------------------------------------- Hero */}
+  <section class="border-b border-[color:var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-5 py-14 text-center sm:px-8 sm:py-20">
+      {/*
+        The festival's own mark. It already carries the words "Living Tamil
+        LitFest", so the heading below is set a little smaller than a normal
+        page title — the logo leads, and the heading adds the city and year.
+        It stays an <h1> so the page still has a real, complete title for
+        screen readers and search engines.
+      */}
+      <Image
+        src={litfestLogo}
+        alt="Living Tamil LitFest"
+        widths={[220, 440, 660]}
+        sizes="(min-width: 640px) 220px, 170px"
+        class="litfest-logo mx-auto h-auto w-[170px] sm:w-[220px]"
+        loading="eager"
+      />
+
+      {/*
+        No "London 2027" eyebrow here: the heading below already carries the
+        city and year, and with the logo above it the name was appearing three
+        times in as many lines.
+      */}
+      <h1 class="mx-auto mt-9 max-w-4xl text-[1.8rem] leading-tight font-medium text-balance sm:text-[2.6rem]">
+        <Bilingual k="nav.litfest" />
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-[1.15rem] italic sm:text-[1.4rem]">
+        <Bilingual en={FESTIVAL_TAGLINE.en} ta={FESTIVAL_TAGLINE.ta} />
+      </p>
+
+      {/* TODO: replace with the confirmed dates and venue. */}
+      <dl class="mt-10 flex flex-wrap items-start justify-center gap-x-14 gap-y-6">
+        <div>
+          <dt class="eyebrow"><Bilingual k="events.date" /></dt>
+          <dd class="mt-1.5 text-[1rem]"><Bilingual k="litfest.tbc" /></dd>
+        </div>
+        <div>
+          <dt class="eyebrow"><Bilingual k="events.venue" /></dt>
+          <dd class="mt-1.5 text-[1rem]"><Bilingual k="litfest.tbc" /></dd>
+        </div>
+      </dl>
+
+      <a href="/contact/" class="btn btn-primary mt-11">
+        <Bilingual k="litfest.register" />
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    {/* --------------------------------------------------------- Overview */}
+    <section class="py-16 sm:py-20">
+      <h2 class="eyebrow border-b border-[color:var(--color-rule)] pb-3">
+        <Bilingual k="litfest.overview" />
+      </h2>
+
+      <div class="mt-9 max-w-[var(--measure-wide)]">
+        <p class="text-[1.2rem] leading-relaxed">
+          <Bilingual en={intro.lede.en} ta={intro.lede.ta} />
+        </p>
+        <p class="mt-5 text-[1.02rem] text-[color:var(--color-ink-muted)]">
+          <Bilingual en={intro.body.en} ta={intro.body.ta} />
+        </p>
+      </div>
+
+      {/* Overview figures — every value is still to be announced. */}
+      <dl class="mt-14 grid gap-px border border-[color:var(--color-rule)] bg-[color:var(--color-rule)] sm:grid-cols-2 lg:grid-cols-3">
+        {
+          overview.map((item) => (
+            <div class="bg-[color:var(--color-paper)] px-6 py-7">
+              <dt class="eyebrow">
+                <Bilingual en={item.label.en} ta={item.label.ta} />
+              </dt>
+              <dd class="mt-3 text-[1.35rem] font-medium text-[color:var(--color-accent)]">
+                <Bilingual k="litfest.tbc" />
+              </dd>
+              <p class="mt-2.5 text-[0.9rem] text-[color:var(--color-ink-muted)]">
+                <Bilingual en={item.note.en} ta={item.note.ta} />
+              </p>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    {/* -------------------------------------------------------- Programme */}
+    <section class="py-16 sm:py-20">
+      <h2 class="eyebrow border-b border-[color:var(--color-rule)] pb-3">
+        <Bilingual k="litfest.programme" />
+      </h2>
+
+      <div class="mt-10 grid gap-12 md:grid-cols-2 md:gap-16">
+        {
+          programme.map((day) => (
+            <div>
+              <h3 class="text-[1.35rem] font-medium">
+                <Bilingual en={day.day.en} ta={day.day.ta} />
+              </h3>
+
+              <ol class="mt-6 space-y-px">
+                {day.slots.map((slot, i) => (
+                  <li class="session">
+                    <span class="session__index" aria-hidden="true">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span class="session__body">
+                      <span class="session__title">
+                        <Bilingual en={slot.en} ta={slot.ta} />
+                      </span>
+                      {/* TODO: replace with the confirmed speaker and time. */}
+                      <span class="session__meta">
+                        <Bilingual k="litfest.sessionTbc" />
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* ------------------------------------------------ Advisory committee */}
+    <section class="py-16 sm:py-20">
+      <h2 class="eyebrow border-b border-[color:var(--color-rule)] pb-3">
+        <Bilingual k="litfest.advisory" />
+      </h2>
+
+      {/*
+        With a single advisor a three-column grid leaves the row stranded, so
+        one card gets a wider horizontal layout. Add more advisors and it
+        becomes a grid on its own.
+      */}
+      <div
+        class:list={[
+          'mt-10 grid gap-10',
+          advisors.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'max-w-2xl',
+        ]}
+      >
+        {
+          advisors.map((advisor) => (
+            <article
+              class:list={[
+                'border border-[color:var(--color-rule)] bg-[color:var(--color-paper-deep)] p-8',
+                advisors.length === 1 && 'flex flex-col gap-7 sm:flex-row sm:items-start sm:p-10',
+              ]}
+            >
+              {/*
+                A monogram stands in for a portrait — no photograph has been
+                supplied for this site.
+                TODO: replace with a portrait if one is provided.
+              */}
+              <p class="monogram shrink-0" aria-hidden="true">
+                {advisor.name.en.charAt(0)}
+              </p>
+
+              <div class:list={[advisors.length > 1 && 'mt-6']}>
+                <h3 class="text-[1.3rem] font-medium">
+                  <Bilingual en={advisor.name.en} ta={advisor.name.ta} />
+                </h3>
+                <p class="eyebrow mt-1.5">
+                  <Bilingual k={advisor.role} />
+                </p>
+                <p class="mt-4 text-[0.95rem] text-[color:var(--color-ink-muted)]">
+                  <Bilingual en={advisor.bio.en} ta={advisor.bio.ta} />
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  {/* ---------------------------------------------------- Register / close */}
+  <section class="border-y border-[color:var(--color-rule-strong)] bg-[color:var(--color-accent-wash)]">
+    <div class="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">
+      <h2 class="text-[1.6rem] leading-tight font-medium sm:text-[2rem]">
+        <Bilingual k="litfest.register" />
+      </h2>
+      <p class="mx-auto mt-5 max-w-[var(--measure)] text-[1rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual
+          en="The full programme, speakers, and booking details will be announced closer to the festival. Tell us you would like to come and we will write to you first."
+          ta="முழு நிகழ்ச்சி நிரல், உரையாற்றுபவர்கள், முன்பதிவு விவரங்கள் திருவிழாவுக்கு அருகில் அறிவிக்கப்படும். நீங்கள் வர விரும்புவதைத் தெரிவியுங்கள் — முதலில் உங்களுக்கே எழுதுவோம்."
+        />
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <a href="/contact/" class="btn btn-primary">
+          <Bilingual k="litfest.register" />
+        </a>
+        <a href="mailto:info@vishnupuram.uk" class="btn btn-outline">info@vishnupuram.uk</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /*
+    The logo is a JPEG on a white ground. Multiply blending drops that white
+    into the paper so the flamingo sits on the page rather than on a white
+    card — the same treatment the site logo gets.
+  */
+  .litfest-logo {
+    mix-blend-mode: multiply;
+  }
+
+  /* Programme slots: hairline-separated rows with a set index number. */
+  .session {
+    display: flex;
+    gap: 1.4rem;
+    align-items: baseline;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .session:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .session__index {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    font-variant-numeric: lining-nums tabular-nums;
+    flex-shrink: 0;
+    width: 1.6rem;
+  }
+
+  .session__body {
+    display: block;
+  }
+
+  .session__title {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  .session__meta {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--color-ink-faint);
+  }
+
+  /* Monogram used where a portrait would go. */
+  .monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 1.9rem;
+    line-height: 1;
+    border-radius: 50%;
+  }
+</style>

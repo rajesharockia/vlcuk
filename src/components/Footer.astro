@@ -1,0 +1,119 @@
+---
+import SiteLogo from './SiteLogo.astro';
+import Bilingual from './Bilingual.astro';
+
+const TAGLINE = 'To promote art and artists, beyond the boundaries of language';
+
+const explore = [
+  { href: '/discussions/', key: 'nav.discussions' },
+  { href: '/litfest/', key: 'nav.litfest' },
+  { href: '/events/', key: 'nav.events' },
+  { href: '/reviews/', key: 'nav.reviews' },
+  { href: '/blog/', key: 'nav.blog' },
+  { href: '/donate/', key: 'nav.donate' },
+  { href: '/contact/', key: 'nav.contact' },
+] as const;
+
+/*
+  Social links are intentionally left as `#`.
+
+  TODO: replace with real Vishnupuram accounts.
+
+  Note for whoever fills these in: the previous WordPress draft shipped with
+  the theme vendor's own demo accounts in these slots. Do not copy those
+  across — they are not ours.
+*/
+const social = [
+  { label: 'Facebook', href: '#' },
+  { label: 'Instagram', href: '#' },
+  { label: 'YouTube', href: '#' },
+  { label: 'X', href: '#' },
+] as const;
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-[color:var(--color-rule)] bg-[color:var(--color-paper-deep)]">
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+    <div class="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+      <!-- Identity -->
+      <div>
+        <a href="/" class="inline-block" aria-label="Vishnupuram UK — home">
+          <SiteLogo variant="footer" />
+        </a>
+        <p class="mt-5 max-w-xs text-[0.95rem] italic text-[color:var(--color-ink-muted)]">
+          {TAGLINE}
+        </p>
+
+        <a href="/donate/" class="btn btn-primary mt-7 text-[0.8rem]">
+          <Bilingual k="donate.cta" />
+        </a>
+      </div>
+
+      <!-- Explore -->
+      <nav aria-label="Footer">
+        <h2 class="eyebrow">
+          <Bilingual k="footer.explore" />
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            explore.map((item) => (
+              <li>
+                <a href={item.href} class="footer-link">
+                  <Bilingual k={item.key} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Contact + social -->
+      <div>
+        <h2 class="eyebrow">
+          <Bilingual k="footer.follow" />
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            social.map((item) => (
+              <li>
+                {/* TODO: replace with real Vishnupuram accounts */}
+                <a href={item.href} class="footer-link">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <a href="mailto:info@vishnupuram.uk" class="footer-link mt-6 inline-block">
+          info@vishnupuram.uk
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-2 border-t border-[color:var(--color-rule)] pt-6 text-[0.82rem] text-[color:var(--color-ink-faint)] sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {year} Vishnupuram UK</p>
+      <p>
+        <a href="/admin/" class="footer-link">Editors' login</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-link {
+    font-size: 0.92rem;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .footer-link:hover {
+    color: var(--color-accent);
+    border-bottom-color: currentColor;
+  }
+</style>

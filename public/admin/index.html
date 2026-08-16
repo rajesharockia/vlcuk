@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Content Manager — Vishnupuram UK</title>
+
+    <!--
+      Netlify Identity backs the `git-gateway` backend declared in config.yml.
+      It must load before the CMS so the login dialog can find it.
+
+      Editors are invited by email from the Netlify dashboard
+      (Site settings -> Identity -> Invite users); they do not need a GitHub
+      account. Git Gateway commits to the `main` branch on their behalf.
+    -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+
+  <body>
+    <!--
+      Decap CMS reads its configuration from ./config.yml, which sits beside
+      this file and is served at /admin/config.yml. The field names there are
+      kept in step with the Astro schemas in src/content.config.ts.
+    -->
+    <script src="https://unpkg.com/decap-cms@^3.15.1/dist/decap-cms.js"></script>
+  </body>
+</html>

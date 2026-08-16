@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Bilingual from '../components/Bilingual.astro';
+import { t } from '../i18n/ui';
+---
+
+<BaseLayout title={t('404.title').en}>
+  <div class="mx-auto max-w-3xl px-5 py-28 text-center sm:px-8 sm:py-36">
+    <p class="eyebrow">404</p>
+
+    <h1 class="mt-4 text-[2rem] leading-tight font-medium sm:text-[2.6rem]">
+      <Bilingual k="404.title" />
+    </h1>
+
+    <p class="mx-auto mt-6 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+      <Bilingual k="404.body" />
+    </p>
+
+    <a href="/" class="btn btn-primary mt-10">
+      <Bilingual k="404.home" />
+    </a>
+  </div>
+</BaseLayout>

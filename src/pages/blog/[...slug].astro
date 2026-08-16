@@ -1,0 +1,85 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection, render } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleShell from '../../components/ArticleShell.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import EntryDate from '../../components/EntryDate.astro';
+import { pair, pairText, meaningful } from '../../lib/content';
+
+// `satisfies` rather than a type annotation, so the entry type survives into
+// Astro.props instead of widening to `unknown`.
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('blog');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { title_en, title_ta, summary_en, summary_ta, date, author, allow_responses } = entry.data;
+
+const title = pairText(pair(title_en, title_ta));
+const description = pairText(pair(summary_en, summary_ta));
+const byline = meaningful(author);
+---
+
+<BaseLayout title={title} description={description || undefined}>
+  <ArticleShell title_en={title_en} title_ta={title_ta} backHref="/blog/" backKey="nav.blog">
+    <EntryDate slot="eyebrow" date={date} class="eyebrow block" />
+
+    <Fragment slot="meta">
+      {
+        byline && (
+          <p class="mt-4 text-[0.95rem] text-[color:var(--color-ink-muted)]">
+            <Bilingual k="blog.author" /> {byline}
+          </p>
+        )
+      }
+    </Fragment>
+
+    <Fragment slot="lede">
+      {
+        (summary_en || summary_ta) && (
+          <p class="mt-8 text-[1.15rem] leading-relaxed text-[color:var(--color-ink-muted)] italic">
+            <Bilingual en={summary_en} ta={summary_ta} />
+          </p>
+        )
+      }
+    </Fragment>
+
+    <Content />
+
+    {/*
+      Reader responses.
+
+      Static for now: there is no comment backend, and adding one would mean
+      either a third-party service or a database, neither of which fits the
+      Git-based setup. Responses arrive by email and an editor adds them to
+      the post. The section is rendered only when the entry's
+      `allow_responses` flag is on, so an editor can turn it off per post.
+
+      TODO: replace this block if a commenting service is ever adopted.
+    */}
+    {
+      allow_responses && (
+        <section slot="after" class="mt-20 border-t border-[color:var(--color-rule-strong)] pt-10">
+          <h2 class="text-[1.3rem] font-medium">
+            <Bilingual k="blog.responses" />
+          </h2>
+
+          <p class="mt-4 max-w-[var(--measure)] text-[0.98rem] text-[color:var(--color-ink-muted)]">
+            <Bilingual k="blog.responsesNote" />
+          </p>
+
+          <a href="mailto:info@vishnupuram.uk" class="btn btn-outline mt-7 text-[0.8rem]">
+            info@vishnupuram.uk
+          </a>
+        </section>
+      )
+    }
+  </ArticleShell>
+</BaseLayout>

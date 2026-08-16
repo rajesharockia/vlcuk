@@ -1,0 +1,21 @@
+---
+import { formatDate, formatDateRange, isoDate } from '../lib/content';
+
+interface Props {
+  date: Date;
+  /** When given, renders a range and collapses a repeated month. */
+  end?: Date;
+  class?: string;
+}
+
+const { date, end, class: className = '' } = Astro.props;
+
+const en = end ? formatDateRange(date, end, 'en') : formatDate(date, 'en');
+const ta = end ? formatDateRange(date, end, 'ta') : formatDate(date, 'ta');
+---
+
+{/* Both locales are rendered; the language toggle picks one. */}
+<time datetime={isoDate(date)} class={className}>
+  <span lang="en" data-lang="en">{en}</span>
+  <span lang="ta" data-lang="ta">{ta}</span>
+</time>

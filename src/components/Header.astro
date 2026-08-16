@@ -1,0 +1,156 @@
+---
+import SiteLogo from './SiteLogo.astro';
+import LanguageToggle from './LanguageToggle.astro';
+import Bilingual from './Bilingual.astro';
+import { t, type UIKey } from '../i18n/ui';
+
+type NavItem = {
+  href: string;
+  key: UIKey;
+  /** Picks up the accent colour, to keep the Donate link prominent. */
+  accent?: boolean;
+};
+
+const nav: NavItem[] = [
+  { href: '/discussions/', key: 'nav.discussions' },
+  { href: '/litfest/', key: 'nav.litfest' },
+  { href: '/events/', key: 'nav.events' },
+  { href: '/reviews/', key: 'nav.reviews' },
+  { href: '/blog/', key: 'nav.blog' },
+  // Donate sits before Contact, matching the footer's "Explore" order.
+  // Shown at every width — the header bar no longer carries a second copy.
+  { href: '/donate/', key: 'nav.donate', accent: true },
+  { href: '/contact/', key: 'nav.contact' },
+];
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="border-b border-[color:var(--color-rule)]">
+  {/*
+    The logo and the toggle+menu cluster have to fit a 320px viewport between
+    them, so both step down on small screens. At 160px the logo alone pushed
+    the row past the viewport and gave the whole page a horizontal scroll.
+  */}
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4 sm:gap-4 sm:px-8">
+    <a href="/" class="min-w-0 shrink" aria-label="Vishnupuram UK — home">
+      <SiteLogo variant="header" eager />
+    </a>
+
+    <div class="flex shrink-0 items-center gap-3 sm:gap-6">
+      <LanguageToggle />
+
+      {/*
+        Donate lives in the navigation below rather than as a second button
+        here, so it sits in the requested order beside Contact instead of
+        appearing twice in the same header. The prominent button treatment is
+        still carried by the footer and by the home page's donate section.
+      */}
+
+      <!-- Progressive-enhancement menu button: hidden unless JS runs. -->
+      <button
+        type="button"
+        id="nav-toggle"
+        class="nav-toggle md:hidden"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="sr-only">
+          <Bilingual k="nav.menu" />
+        </span>
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" fill="none">
+          <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="primary-nav"
+    class="nav-panel border-t border-[color:var(--color-rule)] md:border-t-0"
+    aria-label={`${t('nav.primary').en} / ${t('nav.primary').ta}`}
+  >
+    <ul
+      class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-8 md:py-3"
+    >
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class:list={['nav-link', item.accent && 'nav-link--accent']}
+            >
+              <Bilingual k={item.key} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -0.5rem;
+    background: none;
+    border: 0;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--color-ink-muted);
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link[aria-current='page'] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .nav-link--accent {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* Mobile: the nav collapses only when JavaScript is available to reopen it.
+     Without JS the `is-collapsed` class is never added and the list stays
+     visible, so navigation always works. */
+  @media (max-width: 47.99rem) {
+    .nav-panel.is-collapsed {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('primary-nav');
+
+  if (toggle && panel) {
+    // Collapse only now that we know the toggle can reopen it.
+    panel.classList.add('is-collapsed');
+
+    toggle.addEventListener('click', () => {
+      const open = panel.classList.toggle('is-collapsed');
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+  }
+</script>

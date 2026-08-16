@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Bilingual from '../Bilingual.astro';
+import EntryDate from '../EntryDate.astro';
+import { resolveImage } from '../../lib/images';
+
+interface Props {
+  entry: CollectionEntry<'events'>;
+  /** Full-width treatment used for the featured event. */
+  feature?: boolean;
+}
+
+const { entry, feature = false } = Astro.props;
+const { title_en, title_ta, summary_en, summary_ta, venue_en, venue_ta, date, end_date, image } =
+  entry.data;
+const cover = resolveImage(image);
+const href = `/events/${entry.id}/`;
+---
+
+{
+  feature ? (
+    <article class="border border-[color:var(--color-rule-strong)] bg-[color:var(--color-paper-deep)] p-7 sm:p-11">
+      <p class="eyebrow text-[color:var(--color-accent)]">
+        <Bilingual k="events.featured" />
+      </p>
+
+      <h3 class="mt-4 max-w-[20ch] text-[1.8rem] leading-tight font-medium sm:text-[2.5rem]">
+        <a href={href} class="link-title">
+          <Bilingual en={title_en} ta={title_ta} />
+        </a>
+      </h3>
+
+      <div class="mt-5 flex flex-wrap items-baseline gap-x-8 gap-y-2 text-[0.95rem] text-[color:var(--color-ink-muted)]">
+        <EntryDate date={date} end={end_date} />
+        {(venue_en || venue_ta) && (
+          <span>
+            <Bilingual en={venue_en} ta={venue_ta} />
+          </span>
+        )}
+      </div>
+
+      {(summary_en || summary_ta) && (
+        <p class="mt-5 max-w-[var(--measure)] text-[1.02rem] text-[color:var(--color-ink-muted)]">
+          <Bilingual en={summary_en} ta={summary_ta} />
+        </p>
+      )}
+
+      <a href={href} class="btn btn-primary mt-8 text-[0.8rem]">
+        <Bilingual k="common.readMore" />
+      </a>
+
+      {cover && (
+        <Image
+          src={cover}
+          alt=""
+          widths={[600, 1200]}
+          sizes="(min-width: 48rem) 700px, 100vw"
+          class="mt-8 h-auto w-full object-cover"
+          loading="lazy"
+        />
+      )}
+    </article>
+  ) : (
+    <article class="grid gap-5 border-b border-[color:var(--color-rule)] py-7 sm:grid-cols-[10rem_1fr] sm:gap-10">
+      <div class="text-[color:var(--color-ink-muted)]">
+        <EntryDate date={date} end={end_date} class="eyebrow block" />
+      </div>
+
+      <div class="max-w-[var(--measure)]">
+        <h3 class="text-[1.2rem] leading-snug font-medium">
+          <a href={href} class="link-title">
+            <Bilingual en={title_en} ta={title_ta} />
+          </a>
+        </h3>
+
+        {(venue_en || venue_ta) && (
+          <p class="mt-1.5 text-[0.9rem] text-[color:var(--color-ink-faint)]">
+            <Bilingual en={venue_en} ta={venue_ta} />
+          </p>
+        )}
+
+        {(summary_en || summary_ta) && (
+          <p class="mt-3 text-[0.96rem] text-[color:var(--color-ink-muted)]">
+            <Bilingual en={summary_en} ta={summary_ta} />
+          </p>
+        )}
+      </div>
+    </article>
+  )
+}

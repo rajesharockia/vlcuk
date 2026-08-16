@@ -1,0 +1,33 @@
+# Netlify build and deploy configuration for Vishnupuram UK.
+# Importing the repo in the Netlify UI picks these settings up automatically.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Astro 7 requires Node 22.12 or newer (see "engines" in package.json).
+  NODE_VERSION = "22"
+
+# Astro emits src/pages/404.astro as dist/404.html, which Netlify serves
+# automatically for unmatched paths. No redirect rule is needed for it.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Fingerprinted build assets never change, so they can be cached indefinitely.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The CMS config must not be cached, or editors can end up running an old
+# schema after a field is added.
+[[headers]]
+  for = "/admin/config.yml"
+  [headers.values]
+    Cache-Control = "no-cache"

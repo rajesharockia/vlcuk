@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Bilingual from '../components/Bilingual.astro';
+import { t } from '../i18n/ui';
+
+const intro = {
+  en: 'Questions about the reading circle, an event, or contributing a piece? Write to us — we read everything.',
+  ta: 'வாசகர் வட்டம், நிகழ்வுகள், அல்லது எழுத்துப் பங்களிப்பு குறித்து ஏதேனும் கேள்விகள் உள்ளனவா? எங்களுக்கு எழுதுங்கள் — அனைத்தையும் வாசிக்கிறோம்.',
+};
+
+/** Labels are rendered in both languages, so each field needs a pair. */
+const fields = [
+  { name: 'name', key: 'contact.name', type: 'text', autocomplete: 'name' },
+  { name: 'email', key: 'contact.email', type: 'email', autocomplete: 'email' },
+  { name: 'subject', key: 'contact.subject', type: 'text', autocomplete: 'off' },
+] as const;
+---
+
+<BaseLayout title={t('contact.title').en} description={intro.en}>
+  <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="contact.title" />
+      </h1>
+      <p class="mt-5 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+    </header>
+
+    {/*
+      Netlify Forms.
+
+      On a static build Netlify's bot scans the deployed HTML for `data-netlify`
+      and registers the form from what it finds, so the markup below is the
+      whole integration — there is no endpoint to configure. The hidden
+      `form-name` input is required for the POST to be attributed correctly,
+      and `netlify-honeypot` names a decoy field that real people leave empty.
+
+      Submissions appear under Forms in the Netlify dashboard.
+    */}
+    <form
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/contact/?sent=1"
+      class="mt-12 space-y-7"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+
+      <p class="hidden">
+        <label>
+          Do not fill this in if you are human:
+          <input name="bot-field" tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+
+      {
+        fields.map((field) => (
+          <div>
+            <label for={field.name} class="eyebrow block">
+              <Bilingual k={field.key} />
+            </label>
+            <input
+              id={field.name}
+              name={field.name}
+              type={field.type}
+              autocomplete={field.autocomplete}
+              required={field.name !== 'subject'}
+              class="form-input mt-2"
+            />
+          </div>
+        ))
+      }
+
+      <div>
+        <label for="message" class="eyebrow block">
+          <Bilingual k="contact.message" />
+        </label>
+        <textarea id="message" name="message" rows="7" required class="form-input mt-2"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <Bilingual k="contact.send" />
+      </button>
+    </form>
+
+    <div class="mt-14 border-t border-[color:var(--color-rule)] pt-8">
+      <p class="eyebrow">
+        <Bilingual k="contact.emailUs" />
+      </p>
+      <a href="mailto:info@vishnupuram.uk" class="link-accent mt-2 inline-block text-[1.1rem]">
+        info@vishnupuram.uk
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .form-input {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+    background-color: #fff;
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 0;
+    transition: border-color 150ms ease;
+  }
+
+  .form-input:hover {
+    border-color: var(--color-ink-faint);
+  }
+
+  .form-input:focus {
+    border-color: var(--color-accent);
+  }
+
+  textarea.form-input {
+    resize: vertical;
+    min-height: 9rem;
+  }
+</style>

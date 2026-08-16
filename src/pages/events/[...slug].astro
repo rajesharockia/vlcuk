@@ -1,0 +1,99 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleShell from '../../components/ArticleShell.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import EntryDate from '../../components/EntryDate.astro';
+import { resolveImage } from '../../lib/images';
+import { pair, pairText } from '../../lib/content';
+
+// `satisfies` rather than a type annotation, so the entry type survives into
+// Astro.props instead of widening to `unknown`.
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('events');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const {
+  title_en,
+  title_ta,
+  summary_en,
+  summary_ta,
+  venue_en,
+  venue_ta,
+  date,
+  end_date,
+  status,
+  image,
+} = entry.data;
+
+const cover = resolveImage(image);
+const title = pairText(pair(title_en, title_ta));
+const description = pairText(pair(summary_en, summary_ta));
+const hasVenue = Boolean(venue_en || venue_ta);
+---
+
+<BaseLayout title={title} description={description || undefined}>
+  <ArticleShell title_en={title_en} title_ta={title_ta} backHref="/events/" backKey="nav.events">
+    <p slot="eyebrow" class="eyebrow" class:list={[status === 'past' && 'opacity-70']}>
+      <Bilingual k={status === 'past' ? 'events.past' : 'events.upcoming'} />
+    </p>
+
+    <Fragment slot="meta">
+      <dl
+        class="mt-6 flex flex-wrap gap-x-12 gap-y-4 text-[0.95rem] text-[color:var(--color-ink-muted)]"
+      >
+        <div>
+          <dt class="eyebrow"><Bilingual k="events.date" /></dt>
+          <dd class="mt-1"><EntryDate date={date} end={end_date} /></dd>
+        </div>
+
+        {
+          hasVenue && (
+            <div>
+              <dt class="eyebrow">
+                <Bilingual k="events.venue" />
+              </dt>
+              <dd class="mt-1">
+                <Bilingual en={venue_en} ta={venue_ta} />
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+    </Fragment>
+
+    <Fragment slot="lede">
+      {
+        (summary_en || summary_ta) && (
+          <p class="mt-8 text-[1.15rem] leading-relaxed text-[color:var(--color-ink-muted)] italic">
+            <Bilingual en={summary_en} ta={summary_ta} />
+          </p>
+        )
+      }
+
+      {
+        cover && (
+          <Image
+            src={cover}
+            alt=""
+            widths={[700, 1400]}
+            sizes="(min-width: 48rem) 768px, 100vw"
+            class="mt-10 h-auto w-full"
+            loading="lazy"
+          />
+        )
+      }
+    </Fragment>
+
+    <Content />
+  </ArticleShell>
+</BaseLayout>

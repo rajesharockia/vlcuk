@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import DiscussionCard from '../../components/cards/DiscussionCard.astro';
+import { byNewest } from '../../lib/content';
+import { t } from '../../i18n/ui';
+
+const entries = byNewest(await getCollection('discussions'));
+
+const intro = {
+  en: 'Every week a circle of readers meets to read a Tamil text closely and argue about it. These are the notes from those meetings.',
+  ta: 'ஒவ்வொரு வாரமும் வாசகர் வட்டம் ஒரு தமிழ் நூலை நுட்பமாக வாசித்து விவாதிக்கிறது. அந்தச் சந்திப்புகளின் குறிப்புகள் இவை.',
+};
+---
+
+<BaseLayout title={t('nav.discussions').en} description={intro.en}>
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="nav.discussions" />
+      </h1>
+      <p class="mt-5 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+    </header>
+
+    {
+      entries.length > 0 ? (
+        <div class="mt-4">
+          {entries.map((entry) => (
+            <DiscussionCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="py-16 text-[color:var(--color-ink-faint)]">
+          <Bilingual k="common.empty" />
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

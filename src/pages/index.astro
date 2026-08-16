@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteLogo from '../components/SiteLogo.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DonateCTA from '../components/DonateCTA.astro';
+import Bilingual from '../components/Bilingual.astro';
+import DiscussionCard from '../components/cards/DiscussionCard.astro';
+import EventCard from '../components/cards/EventCard.astro';
+import ReviewCard from '../components/cards/ReviewCard.astro';
+import PostCard from '../components/cards/PostCard.astro';
+
+import { byNewest, bySoonest } from '../lib/content';
+
+const TAGLINE = 'To promote art and artists, beyond the boundaries of language';
+
+const discussions = byNewest(await getCollection('discussions')).slice(0, 3);
+const reviews = byNewest(await getCollection('reviews'));
+const posts = byNewest(await getCollection('blog')).slice(0, 2);
+
+const allEvents = await getCollection('events');
+const upcoming = bySoonest(allEvents.filter((e) => e.data.status === 'upcoming'));
+
+// The home page leads with whichever upcoming event is flagged `featured` in
+// the CMS, falling back to the soonest one.
+const featuredEvent = upcoming.find((e) => e.data.featured) ?? upcoming[0];
+const otherEvents = upcoming.filter((e) => e.id !== featuredEvent?.id).slice(0, 3);
+const featuredReview = reviews[0];
+---
+
+<BaseLayout>
+  {/* ---------------------------------------------------------------- Hero */}
+  <section class="border-b border-[color:var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-5 py-20 text-center sm:px-8 sm:py-28">
+      <div class="flex justify-center">
+        <SiteLogo variant="hero" eager />
+      </div>
+
+      {/*
+        The tagline is the forum's own wording and is kept verbatim, in
+        English, in both language modes.
+      */}
+      <p
+        class="mx-auto mt-10 max-w-2xl text-[1.25rem] leading-relaxed text-balance italic sm:text-[1.6rem]"
+      >
+        {TAGLINE}
+      </p>
+
+      <div class="mt-11 flex flex-wrap items-center justify-center gap-4">
+        <a href="/discussions/" class="btn btn-outline text-[0.8rem]">
+          <Bilingual k="nav.discussions" />
+        </a>
+        <a href="/donate/" class="btn btn-primary text-[0.8rem]">
+          <Bilingual k="donate.cta" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    {/* ------------------------------------------------- Weekly discussions */}
+    {
+      discussions.length > 0 && (
+        <section class="py-16 sm:py-20">
+          <SectionHeading k="home.latestDiscussions" href="/discussions/" />
+          {discussions.map((entry) => (
+            <DiscussionCard entry={entry} />
+          ))}
+        </section>
+      )
+    }
+
+    {/* ---------------------------------------------------- Featured review */}
+    {
+      featuredReview && (
+        <section class="py-16 sm:py-20">
+          <SectionHeading k="home.featuredReview" href="/reviews/" />
+          <ReviewCard entry={featuredReview} feature />
+        </section>
+      )
+    }
+  </div>
+
+  {/* ------------------------------------------------------- Upcoming events */}
+  {
+    featuredEvent && (
+      <section class="bg-[color:var(--color-paper-deep)] py-16 sm:py-20">
+        <div class="mx-auto max-w-6xl px-5 sm:px-8">
+          <SectionHeading k="home.upcomingEvents" href="/events/" />
+          <EventCard entry={featuredEvent} feature />
+
+          {otherEvents.length > 0 && (
+            <div class="mt-10">
+              {otherEvents.map((entry) => (
+                <EventCard entry={entry} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    {/* -------------------------------------------- Readers' conversations */}
+    {
+      posts.length > 0 && (
+        <section class="py-16 sm:py-20">
+          <SectionHeading k="home.conversations" href="/blog/" />
+          {posts.map((entry) => (
+            <PostCard entry={entry} />
+          ))}
+        </section>
+      )
+    }
+  </div>
+
+  <DonateCTA />
+</BaseLayout>

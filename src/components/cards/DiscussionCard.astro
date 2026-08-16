@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Bilingual from '../Bilingual.astro';
+import EntryDate from '../EntryDate.astro';
+import { resolveImage } from '../../lib/images';
+
+interface Props {
+  entry: CollectionEntry<'discussions'>;
+}
+
+const { entry } = Astro.props;
+const { title_en, title_ta, summary_en, summary_ta, date, image } = entry.data;
+const cover = resolveImage(image);
+const href = `/discussions/${entry.id}/`;
+---
+
+<article class="group grid gap-5 border-b border-[color:var(--color-rule)] py-8 sm:grid-cols-[1fr_auto] sm:gap-10">
+  <div class="max-w-[var(--measure)]">
+    <EntryDate date={date} class="eyebrow block" />
+
+    <h3 class="mt-3 text-[1.25rem] leading-snug font-medium sm:text-[1.4rem]">
+      <a href={href} class="link-title">
+        <Bilingual en={title_en} ta={title_ta} />
+      </a>
+    </h3>
+
+    <p class="mt-3 text-[0.98rem] text-[color:var(--color-ink-muted)]">
+      <Bilingual en={summary_en} ta={summary_ta} />
+    </p>
+
+    <a href={href} class="link-accent mt-4 inline-block text-[0.85rem]">
+      <Bilingual k="common.readMore" />
+      <span aria-hidden="true"> →</span>
+    </a>
+  </div>
+
+  {
+    cover && (
+      <a href={href} class="block sm:w-[180px]" tabindex="-1" aria-hidden="true">
+        <Image
+          src={cover}
+          alt=""
+          widths={[180, 360]}
+          sizes="180px"
+          class="h-[120px] w-full object-cover sm:h-[130px]"
+          loading="lazy"
+        />
+      </a>
+    )
+  }
+</article>

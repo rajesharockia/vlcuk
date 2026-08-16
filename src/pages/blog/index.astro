@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import PostCard from '../../components/cards/PostCard.astro';
+import { byNewest } from '../../lib/content';
+import { t } from '../../i18n/ui';
+
+const entries = byNewest(await getCollection('blog'));
+
+const intro = {
+  en: 'Essays, letters, and arguments from the readers of Vishnupuram. Anyone in the circle can write here.',
+  ta: 'விஷ்ணுபுரம் வாசகர்களின் கட்டுரைகள், கடிதங்கள், விவாதங்கள். வட்டத்தில் உள்ள எவரும் இங்கு எழுதலாம்.',
+};
+---
+
+<BaseLayout title={t('nav.blog').en} description={intro.en}>
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="nav.blog" />
+      </h1>
+      <p class="mt-5 max-w-[var(--measure)] text-[1.05rem] text-[color:var(--color-ink-muted)]">
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+    </header>
+
+    {
+      entries.length > 0 ? (
+        <div class="mt-4">
+          {entries.map((entry) => (
+            <PostCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="py-16 text-[color:var(--color-ink-faint)]">
+          <Bilingual k="common.empty" />
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>
