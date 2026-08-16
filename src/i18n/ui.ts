@@ -11,7 +11,7 @@ export const ui = {
   'nav.discussions': { en: 'Weekly Discussions', ta: 'வாராந்திர வாசிப்பு' },
   'nav.litfest': {
     en: 'Living Tamil Lit Fest London 27',
-    ta: 'லிவிங் தமிழ் இலக்கியத் திருவிழா — லண்டன் 27',
+    ta: 'வாழும் தமிழ் இலக்கியத் திருவிழா — லண்டன் 2027',
   },
   'nav.events': { en: 'Events', ta: 'நிகழ்வுகள்' },
   'nav.reviews': { en: 'Book Reviews', ta: 'நூல் மதிப்புரைகள்' },
