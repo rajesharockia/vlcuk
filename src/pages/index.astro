@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConstructionBanner from '../components/ConstructionBanner.astro';
 import SiteLogo from '../components/SiteLogo.astro';
+import AboutSection from '../components/AboutSection.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DonateCTA from '../components/DonateCTA.astro';
 import Bilingual from '../components/Bilingual.astro';
@@ -60,6 +61,8 @@ const featuredReview = reviews[0];
       </div>
     </div>
   </section>
+
+  <AboutSection />
 
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     {/* ------------------------------------------------- Weekly discussions */}

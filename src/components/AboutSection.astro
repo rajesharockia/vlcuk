@@ -1,0 +1,165 @@
+---
+/**
+ * "About Vishnupuram UK" — home page only, per the brief.
+ *
+ * Source content was supplied as a prose/bullet dump and edited down for the
+ * site's voice. Two things were dropped entirely rather than adapted:
+ *
+ *   - A stray citation fragment ("thiru.uk+1") left over from wherever the
+ *     Thiru Publications paragraph was drafted — not text meant to be read.
+ *   - A closing offer to help find reading sessions, community links, and UK
+ *     coordinator contacts. That's an assistant's own follow-up to the person
+ *     who supplied this content, not copy for a site visitor, so it doesn't
+ *     belong in the page.
+ *
+ * The company-registration detail for Thiru Publications Ltd was softened
+ * from formal Companies House filing language ("registered activities
+ * include book publishing, other publishing activities, and the retail sale
+ * of books") to a plain sentence — the underlying fact (a UK company,
+ * founded 2025) is kept, just not phrased like a registry lookup.
+ */
+import Bilingual from './Bilingual.astro';
+import SectionHeading from './SectionHeading.astro';
+
+const intro = {
+  en: 'Vishnupuram UK — formally, the Vishnupuram Literary Circle, Great Britain — is the UK branch of the Vishnupuram Literary Circle, a Tamil literary movement founded by readers and friends of the writer Jeyamohan. The parent circle was established in Coimbatore in 2010, to encourage serious engagement with Tamil literature through reading, discussion, seminars, and literary events.',
+  ta: 'விஷ்ணுபுரம் UK — முழுப்பெயரில், விஷ்ணுபுரம் இலக்கிய வட்டம், கிரேட் பிரிட்டன் — எழுத்தாளர் ஜெயமோகனின் வாசகர்களும் நண்பர்களும் தொடங்கிய தமிழ் இலக்கிய இயக்கமான விஷ்ணுபுரம் இலக்கிய வட்டத்தின் UK கிளையாகும். வாசிப்பு, விவாதம், கருத்தரங்குகள், இலக்கிய நிகழ்வுகள் வழியாக தமிழ் இலக்கியத்துடன் ஆழமாக ஈடுபட ஊக்குவிக்கும் நோக்குடன், தாய் வட்டம் 2010ஆம் ஆண்டு கோயம்புத்தூரில் தொடங்கப்பட்டது.',
+};
+
+const ukChapterLede = {
+  en: 'The UK chapter was formally launched in 2026. It brings together Tamil readers across the UK around:',
+  ta: 'UK கிளை 2026ஆம் ஆண்டு முறையாகத் தொடங்கப்பட்டது. பின்வருவனவற்றை மையமாகக் கொண்டு, UK முழுவதும் உள்ள தமிழ் வாசகர்களை இது ஒன்றிணைக்கிறது:',
+};
+
+const ukChapterActivities = [
+  {
+    en: 'Reading and discussing modern and classical Tamil literature.',
+    ta: 'நவீன, செவ்வியல் தமிழ் இலக்கியத்தை வாசித்து விவாதித்தல்.',
+  },
+  {
+    en: 'Organising literary meetups, lectures, and author interactions.',
+    ta: 'இலக்கியச் சந்திப்புகள், சொற்பொழிவுகள், எழுத்தாளர்களுடனான உரையாடல்களை ஏற்பாடு செய்தல்.',
+  },
+  {
+    en: 'Introducing new readers to serious Tamil writing.',
+    ta: 'தரமான தமிழ் எழுத்தைப் புதிய வாசகர்களுக்கு அறிமுகப்படுத்துதல்.',
+  },
+  {
+    en: 'Collaborating with Vishnupuram chapters in India, the United States, and Europe.',
+    ta: 'இந்தியா, அமெரிக்கா, ஐரோப்பா ஆகிய நாடுகளில் உள்ள விஷ்ணுபுரம் கிளைகளுடன் இணைந்து செயல்படுதல்.',
+  },
+];
+
+const wideCircleLede = {
+  en: 'Some of the activities associated with the wider Vishnupuram Literary Circle:',
+  ta: 'பரந்த விஷ்ணுபுரம் இலக்கிய வட்டத்தின் செயல்பாடுகளில் சில:',
+};
+
+const wideCircleActivities = [
+  { en: 'Monthly literary discussions.', ta: 'மாதாந்திர இலக்கிய உரையாடல்கள்.' },
+  { en: 'Reader workshops.', ta: 'வாசகர் பட்டறைகள்.' },
+  {
+    en: 'The annual Vishnupuram Literary Award.',
+    ta: 'ஆண்டுதோறும் வழங்கப்படும் விஷ்ணுபுரம் இலக்கிய விருது.',
+  },
+  {
+    en: 'The Living Tamil Literature Festival, now expanding internationally.',
+    ta: 'சர்வதேச அளவில் விரிவடைந்து வரும் லிவிங் தமிழ் இலக்கியத் திருவிழா.',
+  },
+];
+
+const litfestNote = {
+  en: 'The UK chapter is expected to host the Living Tamil Literature Festival in London in 2027, with the support of Thiru Publications UK.',
+  ta: 'திரு பப்ளிகேஷன்ஸ் UK-இன் ஆதரவுடன், 2027ஆம் ஆண்டு லண்டனில் லிவிங் தமிழ் இலக்கியத் திருவிழாவை UK கிளை நடத்த உள்ளது.',
+};
+
+const thiruHeading = { en: 'In partnership with Thiru Publications UK', ta: 'திரு பப்ளிகேஷன்ஸ் UK உடன் இணைந்து' };
+
+const thiruBody = {
+  en: 'Thiru Publications UK — registered as Thiru Publications Ltd, a UK company founded in 2025 — is an independent publisher and cultural organisation based in London, focused on Tamil and South Indian literature and on making it accessible to English-speaking and international readers. Alongside fiction, poetry, literary criticism, history, mythology, and writing on religion and culture, much of its list consists of English translations of contemporary Tamil work. Its anthology The Sound of the Eastern Waves collects Tamil short stories translated into English by members of the Tamil diaspora.',
+  ta: 'திரு பப்ளிகேஷன்ஸ் UK — திரு பப்ளிகேஷன்ஸ் லிமிடெட் என்ற பெயரில் பதிவு செய்யப்பட்ட, 2025ஆம் ஆண்டு தொடங்கப்பட்ட ஒரு UK நிறுவனம் — லண்டனை தளமாகக் கொண்ட ஒரு சுயாதீனப் பதிப்பகமும் பண்பாட்டு அமைப்புமாகும். தமிழ், தென்னிந்திய இலக்கியத்தை ஆங்கிலம் பேசும் மற்றும் சர்வதேச வாசகர்களுக்கு எட்டும்படி செய்வதில் கவனம் செலுத்துகிறது. புனைவு, கவிதை, இலக்கிய விமர்சனம், வரலாறு, புராணவியல், சமயம் மற்றும் பண்பாடு தொடர்பான எழுத்துகளுடன், அதன் பட்டியலில் பெரும்பாலானவை சமகாலத் தமிழ் படைப்புகளின் ஆங்கில மொழிபெயர்ப்புகள். தமிழ்ப் புலம்பெயர் வாசகர்கள் மொழிபெயர்த்த தமிழ்ச் சிறுகதைகளின் தொகுப்பான தி சவுண்ட் ஆஃப் தி ஈஸ்டர்ன் வேவ்ஸ் அதன் வெளியீடுகளில் ஒன்று.',
+};
+---
+
+<div class="mx-auto max-w-6xl px-5 sm:px-8">
+  <section class="py-16 sm:py-20">
+    <SectionHeading k="home.about" />
+
+    <div class="max-w-[var(--measure-wide)] space-y-7 text-[1rem] leading-relaxed text-[color:var(--color-ink-muted)]">
+      <p>
+        <Bilingual en={intro.en} ta={intro.ta} />
+      </p>
+
+      <div>
+        <p>
+          <Bilingual en={ukChapterLede.en} ta={ukChapterLede.ta} />
+        </p>
+        <ul class="about-list mt-4">
+          {
+            ukChapterActivities.map((item) => (
+              <li>
+                <Bilingual en={item.en} ta={item.ta} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p>
+          <Bilingual en={wideCircleLede.en} ta={wideCircleLede.ta} />
+        </p>
+        <ul class="about-list mt-4">
+          {
+            wideCircleActivities.map((item) => (
+              <li>
+                <Bilingual en={item.en} ta={item.ta} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <p>
+        <Bilingual en={litfestNote.en} ta={litfestNote.ta} />
+      </p>
+    </div>
+
+    <div class="mt-12 max-w-[var(--measure-wide)] border-t border-[color:var(--color-rule)] pt-10">
+      <h3 class="text-[1.15rem] font-medium">
+        <Bilingual en={thiruHeading.en} ta={thiruHeading.ta} />
+      </h3>
+      <p class="mt-4 text-[1rem] leading-relaxed text-[color:var(--color-ink-muted)]">
+        <Bilingual en={thiruBody.en} ta={thiruBody.ta} />
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+  /* Matches the dash-marker list style used for rendered Markdown bodies
+     (see .prose ul in global.css), so this hand-authored section reads as
+     part of the same typographic system rather than a different component. */
+  .about-list {
+    list-style: none;
+    padding-left: 1.4em;
+  }
+
+  .about-list > li {
+    position: relative;
+  }
+
+  .about-list > li + li {
+    margin-top: 0.55em;
+  }
+
+  .about-list > li::before {
+    content: '';
+    position: absolute;
+    left: -1.4em;
+    top: 0.72em;
+    width: 0.32em;
+    height: 1px;
+    background-color: var(--color-rule-strong);
+  }
+</style>

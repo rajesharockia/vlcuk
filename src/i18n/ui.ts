@@ -31,6 +31,7 @@ export const ui = {
   'lang.english': { en: 'English', ta: 'English' },
   'lang.tamil': { en: 'தமிழ்', ta: 'தமிழ்' },
 
+  'home.about': { en: 'About Vishnupuram UK', ta: 'விஷ்ணுபுரம் UK பற்றி' },
   'home.latestDiscussions': { en: 'From the Weekly Circle', ta: 'வாராந்திர வட்டத்திலிருந்து' },
   'home.featuredReview': { en: 'From the Bookshelf', ta: 'நூல் அலமாரியிலிருந்து' },
   'home.upcomingEvents': { en: 'Upcoming Events', ta: 'வரவிருக்கும் நிகழ்வுகள்' },
