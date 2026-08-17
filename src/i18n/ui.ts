@@ -8,6 +8,12 @@
  */
 export const ui = {
   'nav.home': { en: 'Home', ta: 'முகப்பு' },
+
+  'banner.construction': {
+    en: 'This site has just launched and is still being completed — some pages are placeholders for now.',
+    ta: 'இந்த இணையதளம் புதிதாகத் தொடங்கப்பட்டுள்ளது, இன்னும் நிறைவடையவில்லை — சில பக்கங்கள் தற்காலிகமானவை.',
+  },
+  'banner.dismiss': { en: 'Dismiss this notice', ta: 'இந்த அறிவிப்பை மூடு' },
   'nav.discussions': { en: 'Weekly Discussions', ta: 'வாராந்திர வாசிப்பு' },
   'nav.litfest': {
     en: 'Living Tamil Lit Fest London 27',

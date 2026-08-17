@@ -1,0 +1,93 @@
+---
+/**
+ * A quiet notice that the site is newly launched and still being filled in.
+ *
+ * Deliberately not styled as a warning — no yellow stripes, no "beta" chip.
+ * A slim rule-bordered strip in the site's own paper/ink palette, closer to
+ * a strapline in a printed journal than a web-app banner.
+ *
+ * Dismissible and remembered per-browser via localStorage, the same pattern
+ * LanguageToggle uses, so a returning reader isn't shown it every visit.
+ */
+import Bilingual from './Bilingual.astro';
+---
+
+{/*
+  No `hidden` attribute here — the banner is visible by default, including
+  with JavaScript off, since the whole point is that first-time and
+  no-script visitors see it. The inline script below only ever hides it
+  (for a reader who already dismissed it), and runs synchronously right
+  after this element so there's no flash of it reappearing on return visits.
+*/}
+<div id="construction-banner" class="construction-banner" role="note">
+  <div class="mx-auto flex max-w-6xl items-start justify-between gap-4 px-5 py-3 sm:px-8">
+    <p class="text-[0.88rem] italic leading-snug text-[color:var(--color-ink-muted)]">
+      <Bilingual k="banner.construction" />
+    </p>
+
+    <button type="button" id="construction-banner-dismiss" class="construction-banner__close">
+      <span class="sr-only">
+        <Bilingual k="banner.dismiss" />
+      </span>
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .construction-banner {
+    background-color: var(--color-paper-deep);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .construction-banner__close {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-top: -0.15rem;
+    margin-right: -0.4rem;
+    background: none;
+    border: 0;
+    color: var(--color-ink-faint);
+    cursor: pointer;
+    transition: color 150ms ease;
+  }
+
+  .construction-banner__close:hover {
+    color: var(--color-accent);
+  }
+</style>
+
+{/*
+  is:inline + placed immediately after the banner: runs synchronously as the
+  parser reaches it, before the browser paints this far down the page, so a
+  reader who already dismissed the notice doesn't see it flash back in.
+*/}
+<script is:inline>
+  (function () {
+    var STORAGE_KEY = 'vp-hide-construction-banner';
+    var banner = document.getElementById('construction-banner');
+    if (!banner) return;
+
+    try {
+      if (localStorage.getItem(STORAGE_KEY) === '1') banner.hidden = true;
+    } catch (e) {
+      // Storage blocked — the banner just shows every visit, which is fine.
+    }
+
+    var dismiss = document.getElementById('construction-banner-dismiss');
+    dismiss?.addEventListener('click', function () {
+      banner.hidden = true;
+      try {
+        localStorage.setItem(STORAGE_KEY, '1');
+      } catch (e) {
+        // Nothing to persist to — it'll just reappear next visit.
+      }
+    });
+  })();
+</script>
