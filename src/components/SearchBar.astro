@@ -1,0 +1,345 @@
+---
+/**
+ * Site search — real full-text search, not a decorative input.
+ *
+ * There's no backend here, so this uses Pagefind: it indexes the built HTML
+ * at the end of `npm run build` (see the `build` script in package.json —
+ * `astro build && pagefind --site dist`), and this component queries that
+ * index entirely client-side via the JS module Pagefind writes to
+ * `/pagefind/pagefind.js`. No server, no API route, no third-party service.
+ *
+ * That index only exists after a full `npm run build`. Running `astro dev`
+ * alone never generates it, so the search box quietly reports itself
+ * unavailable in dev rather than throwing — see the `catch` in the script.
+ *
+ * Bilingual caveat: both the `_en` and `_ta` text for every piece of content
+ * are always present in the built HTML (the language toggle only hides one
+ * with CSS), so Pagefind indexes both regardless of which is visible. Search
+ * itself works correctly in either language, but a result's excerpt can
+ * occasionally mix English and Tamil text in the same snippet. Living with
+ * that is the trade-off for not needing two separate builds per language.
+ */
+import { t } from '../i18n/ui';
+import Bilingual from './Bilingual.astro';
+---
+
+<div class="search" data-search>
+  <button
+    type="button"
+    class="search__toggle"
+    data-search-toggle
+    aria-expanded="false"
+    aria-controls="search-panel"
+  >
+    <span class="sr-only">
+      <Bilingual k="search.open" />
+    </span>
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none">
+      <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12.2 12.2 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </button>
+
+  <div id="search-panel" class="search__panel" data-search-panel hidden>
+    <form role="search" data-search-form>
+      <input
+        type="search"
+        name="q"
+        class="search__input"
+        placeholder={`${t('search.placeholder').en} / ${t('search.placeholder').ta}`}
+        aria-label={`${t('search.open').en} / ${t('search.open').ta}`}
+        autocomplete="off"
+        data-search-input
+      />
+      <button type="button" class="search__close" data-search-close>
+        <span class="sr-only">
+          <Bilingual k="search.close" />
+        </span>
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+          <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>
+      </button>
+    </form>
+
+    <div class="search__results" data-search-results></div>
+  </div>
+</div>
+
+<style>
+  .search {
+    position: relative;
+  }
+
+  .search__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 0;
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    transition: color 150ms ease;
+  }
+
+  .search__toggle:hover,
+  .search[data-open] .search__toggle {
+    color: var(--color-accent);
+  }
+
+  .search__panel {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    z-index: 30;
+    width: min(22rem, 88vw);
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-rule-strong);
+    box-shadow: 0 12px 28px rgb(31 27 22 / 0.14);
+  }
+
+  .search__panel[hidden] {
+    display: none;
+  }
+
+  .search__panel form {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.6rem 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .search__input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--color-ink);
+  }
+
+  .search__input:focus {
+    outline: none;
+  }
+
+  .search__input::placeholder {
+    color: var(--color-ink-faint);
+  }
+
+  .search__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    background: none;
+    border: 0;
+    color: var(--color-ink-faint);
+    cursor: pointer;
+  }
+
+  .search__close:hover {
+    color: var(--color-accent);
+  }
+
+  .search__results {
+    max-height: 22rem;
+    overflow-y: auto;
+  }
+
+  .search__results:empty {
+    display: none;
+  }
+
+  .search__status {
+    padding: 0.9rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--color-ink-faint);
+  }
+
+  .search__result {
+    display: block;
+    padding: 0.75rem 0.9rem;
+    text-decoration: none;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .search__result:first-child {
+    border-top: 0;
+  }
+
+  .search__result:hover {
+    background-color: var(--color-paper-deep);
+  }
+
+  .search__result-title {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .search__result-excerpt {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-ink-muted);
+  }
+
+  .search__result-excerpt :global(mark) {
+    background: none;
+    color: var(--color-accent-deep);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const STATUS = {
+    searching: { en: 'Searching…', ta: 'தேடுகிறது…' },
+    noResults: { en: 'No results found.', ta: 'முடிவுகள் இல்லை.' },
+  };
+
+  function currentLang(): 'en' | 'ta' {
+    return document.documentElement.dataset.lang === 'ta' ? 'ta' : 'en';
+  }
+
+  /**
+   * The subset of Pagefind's runtime API this component actually calls.
+   * `/pagefind/pagefind.js` only exists inside the build output (it's
+   * generated by the `pagefind --site dist` step in package.json), so there
+   * is no real module for TypeScript to import types from — this interface
+   * stands in for it.
+   */
+  interface PagefindResult {
+    url: string;
+    meta: { title?: string };
+    excerpt: string;
+  }
+  interface PagefindSearchResult {
+    data(): Promise<PagefindResult>;
+  }
+  interface PagefindModule {
+    init(): Promise<void>;
+    search(query: string): Promise<{ results: PagefindSearchResult[] }>;
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-search]')) {
+    const toggle = root.querySelector<HTMLButtonElement>('[data-search-toggle]');
+    const panel = root.querySelector<HTMLElement>('[data-search-panel]');
+    const closeBtn = root.querySelector<HTMLButtonElement>('[data-search-close]');
+    const input = root.querySelector<HTMLInputElement>('[data-search-input]');
+    const resultsEl = root.querySelector<HTMLElement>('[data-search-results]');
+    const form = root.querySelector<HTMLFormElement>('[data-search-form]');
+    if (!toggle || !panel || !input || !resultsEl || !form) continue;
+
+    form.addEventListener('submit', (e) => e.preventDefault());
+
+    function open() {
+      panel!.hidden = false;
+      root.setAttribute('data-open', '');
+      toggle!.setAttribute('aria-expanded', 'true');
+      input!.focus();
+    }
+
+    function close() {
+      panel!.hidden = true;
+      root.removeAttribute('data-open');
+      toggle!.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', () => (panel!.hidden ? open() : close()));
+    closeBtn?.addEventListener('click', close);
+
+    document.addEventListener('click', (e) => {
+      if (!panel!.hidden && !root.contains(e.target as Node)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel!.hidden) {
+        close();
+        toggle!.focus();
+      }
+    });
+
+    // Pagefind's index only exists after `npm run build` runs the
+    // `pagefind --site dist` step — never during `astro dev`. Loaded once,
+    // lazily, the first time someone actually opens the search box.
+    let pagefind: PagefindModule | null = null;
+    let loadFailed = false;
+
+    async function ensurePagefind() {
+      if (pagefind || loadFailed) return pagefind;
+      try {
+        // @ts-ignore — this module only exists in the built output, so
+        // there's nothing on disk for Vite/TypeScript to resolve here.
+        pagefind = (await import(/* @vite-ignore */ '/pagefind/pagefind.js')) as PagefindModule;
+        await pagefind.init();
+      } catch {
+        loadFailed = true;
+      }
+      return pagefind;
+    }
+
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+    input.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      const query = input!.value.trim();
+      if (!query) {
+        resultsEl!.replaceChildren();
+        return;
+      }
+      debounceTimer = setTimeout(() => runSearch(query), 200);
+    });
+
+    async function runSearch(query: string) {
+      const lang = currentLang();
+      const status = document.createElement('p');
+      status.className = 'search__status';
+      status.textContent = STATUS.searching[lang];
+      resultsEl!.replaceChildren(status);
+
+      const pf = await ensurePagefind();
+      if (!pf) {
+        status.textContent =
+          lang === 'ta'
+            ? 'தேடல் இப்போது கிடைக்கவில்லை.'
+            : 'Search isn’t available right now.';
+        return;
+      }
+
+      const search = await pf.search(query);
+      const results = await Promise.all(search.results.slice(0, 8).map((r) => r.data()));
+
+      if (results.length === 0) {
+        status.textContent = STATUS.noResults[lang];
+        return;
+      }
+
+      const items = results.map((r) => {
+        const a = document.createElement('a');
+        a.className = 'search__result';
+        a.href = r.url;
+
+        const title = document.createElement('span');
+        title.className = 'search__result-title';
+        title.textContent = r.meta.title ?? r.url;
+
+        const excerpt = document.createElement('span');
+        excerpt.className = 'search__result-excerpt';
+        // Pagefind generates this from our own built pages, not user input,
+        // so the <mark> highlighting it contains is safe to render as HTML.
+        excerpt.innerHTML = r.excerpt;
+
+        a.append(title, excerpt);
+        return a;
+      });
+
+      resultsEl!.replaceChildren(...items);
+    }
+  }
+</script>

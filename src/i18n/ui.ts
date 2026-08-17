@@ -15,10 +15,6 @@ export const ui = {
   },
   'banner.dismiss': { en: 'Dismiss this notice', ta: 'இந்த அறிவிப்பை மூடு' },
   'nav.discussions': { en: 'Weekly Discussions', ta: 'வாராந்திர வாசிப்பு' },
-  'nav.litfest': {
-    en: 'Living Tamil Lit Fest London 27',
-    ta: 'வாழும் தமிழ் இலக்கியத் திருவிழா — லண்டன் 2027',
-  },
   'nav.events': { en: 'Events', ta: 'நிகழ்வுகள்' },
   'nav.reviews': { en: 'Book Reviews', ta: 'நூல் மதிப்புரைகள்' },
   'nav.blog': { en: "Readers' Conversations", ta: 'வாசகர் உரையாடல்கள்' },
@@ -26,6 +22,12 @@ export const ui = {
   'nav.contact': { en: 'Contact', ta: 'தொடர்பு' },
   'nav.menu': { en: 'Menu', ta: 'பட்டி' },
   'nav.primary': { en: 'Primary', ta: 'முதன்மை' },
+
+  'search.open': { en: 'Search', ta: 'தேடல்' },
+  'search.close': { en: 'Close search', ta: 'தேடலை மூடு' },
+  'search.placeholder': { en: 'Search the site…', ta: 'தளத்தில் தேடுக…' },
+  'search.noResults': { en: 'No results found.', ta: 'முடிவுகள் இல்லை.' },
+  'search.searching': { en: 'Searching…', ta: 'தேடுகிறது…' },
 
   'lang.label': { en: 'Language', ta: 'மொழி' },
   'lang.english': { en: 'English', ta: 'English' },
@@ -36,6 +38,14 @@ export const ui = {
   'home.featuredReview': { en: 'From the Bookshelf', ta: 'நூல் அலமாரியிலிருந்து' },
   'home.upcomingEvents': { en: 'Upcoming Events', ta: 'வரவிருக்கும் நிகழ்வுகள்' },
   'home.conversations': { en: "Readers' Conversations", ta: 'வாசகர் உரையாடல்கள்' },
+  'home.videos': { en: 'Videos', ta: 'காணொளிகள்' },
+
+  'videos.empty': {
+    en: 'Videos from our events and conversations will appear here soon.',
+    ta: 'எங்கள் நிகழ்வுகள், உரையாடல்களின் காணொளிகள் விரைவில் இங்கே இடம்பெறும்.',
+  },
+  'videos.watch': { en: 'Watch', ta: 'காண்க' },
+  'videos.comingSoon': { en: 'Video coming soon', ta: 'காணொளி விரைவில்' },
 
   'events.upcoming': { en: 'Upcoming', ta: 'வரவிருக்கும்' },
   'events.past': { en: 'Past Events', ta: 'கடந்த நிகழ்வுகள்' },
@@ -52,8 +62,8 @@ export const ui = {
   'blog.author': { en: 'By', ta: 'எழுதியவர்' },
   'blog.responses': { en: 'Reader Responses', ta: 'வாசகர் பதில்கள்' },
   'blog.responsesNote': {
-    en: 'Responses to this piece will appear here. To add yours, write to info@vishnupuram.uk.',
-    ta: 'இப்பதிவுக்கான பதில்கள் இங்கே இடம்பெறும். உங்கள் பதிலைச் சேர்க்க info@vishnupuram.uk முகவரிக்கு எழுதுங்கள்.',
+    en: 'Responses to this piece will appear here. To add yours, write to Vishnupuramlitcircle@gmail.com.',
+    ta: 'இப்பதிவுக்கான பதில்கள் இங்கே இடம்பெறும். உங்கள் பதிலைச் சேர்க்க Vishnupuramlitcircle@gmail.com முகவரிக்கு எழுதுங்கள்.',
   },
 
   'common.readMore': { en: 'Read more', ta: 'மேலும் வாசிக்க' },
@@ -72,14 +82,6 @@ export const ui = {
   'donate.bankSortCode': { en: 'Sort code', ta: 'சார்ட் குறியீடு' },
   'donate.bankAccountNumber': { en: 'Account number', ta: 'கணக்கு எண்' },
   'donate.bankReference': { en: 'Reference', ta: 'குறிப்பு' },
-
-  'litfest.overview': { en: 'The Festival', ta: 'திருவிழா குறித்து' },
-  'litfest.programme': { en: 'Programme', ta: 'நிகழ்ச்சி நிரல்' },
-  'litfest.advisory': { en: 'Advisory Committee', ta: 'ஆலோசனைக் குழு' },
-  'litfest.advisor': { en: 'Advisor', ta: 'ஆலோசகர்' },
-  'litfest.register': { en: 'Register your interest', ta: 'ஆர்வம் தெரிவிக்க' },
-  'litfest.tbc': { en: 'To be announced', ta: 'விரைவில் அறிவிக்கப்படும்' },
-  'litfest.sessionTbc': { en: 'Session to be announced', ta: 'அமர்வு விரைவில் அறிவிக்கப்படும்' },
 
   'contact.title': { en: 'Contact', ta: 'தொடர்பு' },
   'contact.name': { en: 'Your name', ta: 'உங்கள் பெயர்' },

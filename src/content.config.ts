@@ -39,6 +39,17 @@ const optionalString = z.preprocess(
  */
 const date = z.coerce.date();
 
+/**
+ * Same empty-string-to-undefined treatment as `optionalString`, but for a
+ * field that must be a real URL when present. Lets a `videos` entry exist
+ * with its host link still pending — the card renders a "coming soon" state
+ * rather than either rejecting the entry or linking out to a fake URL.
+ */
+const optionalUrl = z.preprocess(
+  (value) => (typeof value === 'string' && value.trim() === '' ? undefined : value),
+  z.url().optional(),
+);
+
 const discussions = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/discussions' }),
   schema: z.object({
@@ -96,4 +107,26 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { discussions, events, reviews, blog };
+/**
+ * Videos are link-outs to an external host (YouTube, Vimeo), not pages of
+ * our own — there is no `body` field and no detail page for this collection,
+ * just cards on the home page that open `video_url` in a new tab.
+ *
+ * `video_url` is optional on purpose: an entry can exist — title, date,
+ * description filled in — before the video itself has anywhere to live yet.
+ * The card shows a "coming soon" state until an editor adds the real link.
+ */
+const videos = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/videos' }),
+  schema: z.object({
+    title_en: z.string(),
+    title_ta: optionalString,
+    date,
+    video_url: optionalUrl,
+    thumbnail: optionalString,
+    description_en: optionalString,
+    description_ta: optionalString,
+  }),
+});
+
+export const collections = { discussions, events, reviews, blog, videos };

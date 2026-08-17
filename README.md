@@ -103,4 +103,4 @@ Full instructions, including the bilingual field convention and image guidelines
 
 ## Contact
 
-**info@vishnupuram.uk**
+**Vishnupuramlitcircle@gmail.com**

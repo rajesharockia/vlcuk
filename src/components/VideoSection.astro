@@ -1,0 +1,203 @@
+---
+/**
+ * A row of video cards below the photo carousel — the same structural slot
+ * IPL's homepage gives its "Match Highlights" row, reworked in this site's
+ * own palette. Cards are real content-collection entries (see
+ * src/content.config.ts and public/admin/config.yml's `videos` collection),
+ * not hardcoded placeholders, so an editor can add a real one later through
+ * the same /admin flow as everything else on the site.
+ *
+ * No entries yet? The section still renders, with a bilingual "coming soon"
+ * notice — the brief was to have the section in place, ready for videos to
+ * be attached later, not to invent placeholder video content.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import Bilingual from './Bilingual.astro';
+import SectionHeading from './SectionHeading.astro';
+import { byNewest } from '../lib/content';
+import { resolveImage } from '../lib/images';
+import { autoThumbnail } from '../lib/video';
+
+const videos = byNewest(await getCollection('videos')).slice(0, 8);
+---
+
+<div class="mx-auto max-w-6xl px-5 sm:px-8">
+  <section class="py-16 sm:py-20">
+    <SectionHeading k="home.videos" />
+
+    {
+      videos.length === 0 ? (
+        <p class="text-[color:var(--color-ink-faint)]">
+          <Bilingual k="videos.empty" />
+        </p>
+      ) : (
+        <div class="video-row">
+          {videos.map((entry) => {
+            const { title_en, title_ta, video_url, thumbnail } = entry.data;
+            const localThumb = resolveImage(thumbnail);
+            const remoteThumb = localThumb ? undefined : autoThumbnail(video_url);
+            // No link yet: rendered as a plain, non-interactive card rather
+            // than an <a> with nowhere to go — a div can't take href/target/
+            // rel at all, so those are only spread in when there's a real URL.
+            const Tag = video_url ? 'a' : 'div';
+            const linkAttrs = video_url
+              ? { href: video_url, target: '_blank', rel: 'noopener noreferrer' }
+              : {};
+            return (
+              <Tag
+                class="video-card"
+                class:list={[!video_url && 'video-card--pending']}
+                {...linkAttrs}
+              >
+                <span class="video-card__thumb">
+                  {localThumb ? (
+                    <Image
+                      src={localThumb}
+                      alt=""
+                      widths={[300, 600]}
+                      sizes="280px"
+                      class="video-card__img"
+                      loading="lazy"
+                    />
+                  ) : remoteThumb ? (
+                    <img src={remoteThumb} alt="" class="video-card__img" loading="lazy" />
+                  ) : (
+                    <span class="video-card__placeholder" aria-hidden="true">
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M11.5 9.5l8 4.5-8 4.5z" fill="currentColor" />
+                      </svg>
+                    </span>
+                  )}
+                  {video_url ? (
+                    <span class="video-card__play" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <circle cx="9" cy="9" r="9" fill="rgb(0 0 0 / 0.55)" />
+                        <path d="M7 5.5l6 3.5-6 3.5z" fill="#fff" />
+                      </svg>
+                    </span>
+                  ) : (
+                    <span class="video-card__badge">
+                      <Bilingual k="videos.comingSoon" />
+                    </span>
+                  )}
+                </span>
+
+                <span class="video-card__title">
+                  <Bilingual en={title_en} ta={title_ta} />
+                </span>
+              </Tag>
+            );
+          })}
+        </div>
+      )
+    }
+  </section>
+</div>
+
+<style>
+  .video-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .video-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .video-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .video-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .video-card__thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: var(--color-paper-sunk);
+    border: 1px solid var(--color-rule);
+  }
+
+  .video-card__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 250ms ease;
+  }
+
+  .video-card:hover .video-card__img {
+    transform: scale(1.04);
+  }
+
+  .video-card__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--color-accent);
+  }
+
+  .video-card__play {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.6rem;
+  }
+
+  .video-card__badge {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.25em 0.6em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background-color: var(--color-accent);
+  }
+
+  /* No link yet: no pointer cursor, no hover lift — it isn't clickable. */
+  .video-card--pending {
+    cursor: default;
+  }
+
+  .video-card--pending .video-card__img,
+  .video-card--pending .video-card__title {
+    opacity: 0.75;
+  }
+
+  .video-card--pending:hover .video-card__img {
+    transform: none;
+  }
+
+  .video-card--pending:hover .video-card__title {
+    color: var(--color-ink);
+  }
+
+  .video-card__title {
+    display: block;
+    margin-top: 0.65rem;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--color-ink);
+    transition: color 150ms ease;
+  }
+
+  .video-card:hover .video-card__title {
+    color: var(--color-accent);
+  }
+</style>

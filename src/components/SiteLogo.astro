@@ -39,10 +39,12 @@ const { variant = 'header', eager = false } = Astro.props;
  * The hero and footer show it large enough for the wordmark to be legible.
  */
 const BOX = {
-  // 272 = 96 × 2.83, so both marks land at 96px tall on wider screens. The
-  // small-screen step stays modest: at 320px the logo has to share the row
-  // with the language toggle and the menu button.
-  header: 'max-h-[40px] max-w-[113px] sm:max-h-[96px] sm:max-w-[272px]',
+  // 125 = 44 × 2.83, so both marks land at 44px tall on wider screens — a
+  // thin single-bar header, matching the brief's reference (iplt20.com's
+  // compact nav) rather than a tall branded banner. The small-screen step
+  // stays modest: at 320px the logo has to share the row with the toggle
+  // and the menu button.
+  header: 'max-h-[30px] max-w-[85px] sm:max-h-[44px] sm:max-w-[125px]',
   // Hero and footer allow the wide Tamil mark more width, so it doesn't read
   // as much smaller than the square English one sitting in the same slot.
   // The hero is the one place large enough for the English wordmark to be
@@ -54,7 +56,7 @@ const BOX = {
 
 // Rendered widths per variant, so Astro emits sensibly sized sources.
 const WIDTHS = {
-  header: { en: [96, 192, 288], ta: [272, 544] },
+  header: { en: [44, 88, 132], ta: [125, 250] },
   // Tamil tops out at 900 — the source artwork's own width, so it is never
   // upscaled past what it actually contains.
   hero: { en: [240, 480, 720], ta: [560, 900] },

@@ -1,6 +1,7 @@
 ---
 import SiteLogo from './SiteLogo.astro';
 import LanguageToggle from './LanguageToggle.astro';
+import SearchBar from './SearchBar.astro';
 import Bilingual from './Bilingual.astro';
 import { t, type UIKey } from '../i18n/ui';
 
@@ -13,7 +14,6 @@ type NavItem = {
 
 const nav: NavItem[] = [
   { href: '/discussions/', key: 'nav.discussions' },
-  { href: '/litfest/', key: 'nav.litfest' },
   { href: '/events/', key: 'nav.events' },
   { href: '/reviews/', key: 'nav.reviews' },
   { href: '/blog/', key: 'nav.blog' },
@@ -29,20 +29,51 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
 
 <header class="border-b border-[color:var(--color-rule)]">
   {/*
-    The logo and the toggle+menu cluster have to fit a 320px viewport between
-    them, so both step down on small screens. At 160px the logo alone pushed
-    the row past the viewport and gave the whole page a horizontal scroll.
+    One compact row at md+, grouped the way iplt20.com's header is: logo and
+    nav links clustered together on the left, with the language toggle and
+    (below md) the menu button pushed to the far right — two flex groups with
+    space between them, not three items spread evenly across the bar, which
+    is what left the nav stranded in the middle rather than beside the logo.
+    Below md there isn't room for the nav links on one line at all, so they
+    move into a JS-toggled dropdown and only the logo, toggle, and hamburger
+    stay in the compact bar.
   */}
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4 sm:gap-4 sm:px-8">
-    <a href="/" class="min-w-0 shrink" aria-label="Vishnupuram UK — home">
-      <SiteLogo variant="header" eager />
-    </a>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 sm:px-8 sm:py-2.5">
+    <div class="flex min-w-0 items-center gap-6 lg:gap-10">
+      <a href="/" class="min-w-0 shrink-0" aria-label="Vishnupuram UK — home">
+        <SiteLogo variant="header" eager />
+      </a>
+
+      <nav
+        class="hidden min-w-0 md:block"
+        aria-label={`${t('nav.primary').en} / ${t('nav.primary').ta}`}
+      >
+        <ul class="flex items-center gap-5 lg:gap-7">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                  class:list={['nav-link', item.accent && 'nav-link--accent']}
+                >
+                  <Bilingual k={item.key} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      {/* Search sits right after Contact, the last item in the nav list. */}
+      <SearchBar />
+    </div>
 
     <div class="flex shrink-0 items-center gap-3 sm:gap-6">
       <LanguageToggle />
 
       {/*
-        Donate lives in the navigation below rather than as a second button
+        Donate lives in the nav list itself rather than as a second button
         here, so it sits in the requested order beside Contact instead of
         appearing twice in the same header. The prominent button treatment is
         still carried by the footer and by the home page's donate section.
@@ -54,7 +85,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
         id="nav-toggle"
         class="nav-toggle md:hidden"
         aria-expanded="false"
-        aria-controls="primary-nav"
+        aria-controls="primary-nav-mobile"
       >
         <span class="sr-only">
           <Bilingual k="nav.menu" />
@@ -66,14 +97,14 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     </div>
   </div>
 
+  {/* Mobile-only dropdown — the inline nav above already covers md+, so this
+      is never shown at the same time as that one. */}
   <nav
-    id="primary-nav"
-    class="nav-panel border-t border-[color:var(--color-rule)] md:border-t-0"
+    id="primary-nav-mobile"
+    class="nav-panel border-t border-[color:var(--color-rule)] md:hidden"
     aria-label={`${t('nav.primary').en} / ${t('nav.primary').ta}`}
   >
-    <ul
-      class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-8 md:py-3"
-    >
+    <ul class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8">
       {
         nav.map((item) => (
           <li>
@@ -142,7 +173,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
 
 <script>
   const toggle = document.getElementById('nav-toggle');
-  const panel = document.getElementById('primary-nav');
+  const panel = document.getElementById('primary-nav-mobile');
 
   if (toggle && panel) {
     // Collapse only now that we know the toggle can reopen it.

@@ -22,7 +22,7 @@ The stories we read are drawn from writers including:
 
 The circle moves between the earlier generation of Tamil short story writers and those writing now, so a session might set a classic story beside a contemporary one.
 
-Readers of every level of experience are welcome — there is no requirement to have read anything in advance beyond the story itself. To join a session, write to **info@vishnupuram.uk**.
+Readers of every level of experience are welcome — there is no requirement to have read anything in advance beyond the story itself. To join a session, write to **Vishnupuramlitcircle@gmail.com**.
 
 ## தமிழ்
 
@@ -39,4 +39,4 @@ Readers of every level of experience are welcome — there is no requirement to 
 
 முந்தைய தலைமுறைச் சிறுகதை எழுத்தாளர்களுக்கும் இன்று எழுதிக்கொண்டிருப்பவர்களுக்கும் இடையே வட்டம் நகர்கிறது; எனவே ஒரு சந்திப்பில் ஒரு செவ்வியல் கதையும் சமகாலக் கதையும் அருகருகே வைக்கப்படலாம்.
 
-அனுபவ நிலை எதுவாக இருந்தாலும் வாசகர்கள் அனைவரும் வரவேற்கப்படுகிறார்கள் — கதையைத் தவிர முன்கூட்டியே வேறு எதையும் வாசித்திருக்க வேண்டியதில்லை. ஒரு சந்திப்பில் பங்கேற்க **info@vishnupuram.uk** முகவரிக்கு எழுதுங்கள்.
+அனுபவ நிலை எதுவாக இருந்தாலும் வாசகர்கள் அனைவரும் வரவேற்கப்படுகிறார்கள் — கதையைத் தவிர முன்கூட்டியே வேறு எதையும் வாசித்திருக்க வேண்டியதில்லை. ஒரு சந்திப்பில் பங்கேற்க **Vishnupuramlitcircle@gmail.com** முகவரிக்கு எழுதுங்கள்.

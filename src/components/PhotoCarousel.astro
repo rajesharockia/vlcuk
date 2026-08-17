@@ -1,0 +1,373 @@
+---
+/**
+ * A full-bleed photo carousel, modelled on iplt20.com's homepage banner —
+ * same structural pattern (full-width slides, arrow + dot navigation, a
+ * caption scrim at the bottom) reworked entirely in this site's own paper/
+ * ink/vermilion palette rather than IPL's blue.
+ *
+ * Progressive enhancement, matching the pattern used for the mobile nav menu
+ * elsewhere on the site: without JavaScript, every slide is simply visible,
+ * stacked as a plain list of photos — nothing is hidden behind interactivity
+ * that might not run. The inline script below then transforms that stack
+ * into an actual one-slide-at-a-time carousel once it executes.
+ */
+import { Image } from 'astro:assets';
+
+import felicitation from '../assets/gallery/felicitation-birmingham-2026.jpg';
+import litfestPoster from '../assets/gallery/litfest-poster-london-2027.png';
+import novelWorkshop from '../assets/gallery/novel-writing-workshop-2026.jpg';
+import philosophyWorkshop from '../assets/gallery/philosophy-workshop-2026.jpg';
+import storiesPanel from '../assets/gallery/stories-of-the-true-panel-2025.jpg';
+import storiesAudience from '../assets/gallery/stories-of-the-true-audience-2025.jpg';
+import felicitationHalifax from '../assets/gallery/felicitation-halifax-2025.png';
+
+import Bilingual from './Bilingual.astro';
+
+// Every slide uses `contain`: the whole photo stays visible, letterboxed
+// rather than cropped to fill the frame. A couple of slides carry their own
+// note below where there's a *specific* reason contain matters beyond that
+// general policy (a poster with real text on it, a caption near an edge).
+const slides = [
+  {
+    image: litfestPoster,
+    // The mobile breakpoint switches to a taller box, which would crop this
+    // poster's dates/venue text under `cover` even though its own ratio is
+    // close to the desktop box.
+    fit: 'contain' as const,
+    en: 'Living Tamil Literature Festival — London 2027',
+    ta: 'வாழும் தமிழ் இலக்கியத் திருவிழா — லண்டன் 2027',
+  },
+  {
+    image: felicitation,
+    fit: 'contain' as const,
+    en: 'Felicitation at the Consulate General of India, Birmingham',
+    ta: 'இந்தியத் துணைத் தூதரகத்தில் பாராட்டு விழா, பர்மிங்காம்',
+  },
+  {
+    image: storiesAudience,
+    fit: 'contain' as const,
+    en: "A Gathering of South Indian Literature — London, October 2025, to Discuss Dr Jeyamohan's Works",
+    ta: 'தென்னிந்திய இலக்கியக் கூட்டம் — லண்டன், அக்டோபர் 2025, டாக்டர் ஜெயமோகனின் படைப்புகள் குறித்து விவாதிக்க',
+  },
+  {
+    image: storiesPanel,
+    fit: 'contain' as const,
+    en: 'Stories of the True — Discussion on Translated Work by South Indian Writers from Kannada, Telugu & Tamil',
+    ta: 'ஸ்டோரீஸ் ஆஃப் தி ட்ரூ — கன்னடம், தெலுங்கு, தமிழ் தென்னிந்திய எழுத்தாளர்களின் மொழிபெயர்ப்புப் படைப்புகள் குறித்த கலந்துரையாடல்',
+  },
+  {
+    image: felicitationHalifax,
+    // A baked-in caption sits close to the left edge of a wider-than-box
+    // source — cover would risk cropping into it.
+    fit: 'contain' as const,
+    en: 'Felicitation of Mr Ajithan and Dr Jeyamohan — Northern Tamil Association, Halifax',
+    ta: 'மிஸ்டர் அஜிதன், டாக்டர் ஜெயமோகன் பாராட்டு விழா — வட தமிழ்ச் சங்கம், ஹாலிஃபாக்ஸ்',
+  },
+  {
+    image: philosophyWorkshop,
+    fit: 'contain' as const,
+    en: 'Indian Philosophy Workshop — University of Essex, Colchester, August 2026',
+    ta: 'இந்தியத் தத்துவப் பட்டறை — எசெக்ஸ் பல்கலைக்கழகம், கோல்செஸ்டர், ஆகஸ்ட் 2026',
+  },
+  {
+    image: novelWorkshop,
+    fit: 'contain' as const,
+    en: 'Novel Writing Workshop — University of Essex, Colchester, August 2026',
+    ta: 'புதின எழுத்துப் பட்டறை — எசெக்ஸ் பல்கலைக்கழகம், கோல்செஸ்டர், ஆகஸ்ட் 2026',
+  },
+];
+---
+
+<section
+  class="photo-carousel"
+  data-carousel
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="Vishnupuram UK — moments"
+>
+  <div class="photo-carousel__track" data-track>
+    {
+      slides.map((slide, i) => (
+        <figure
+          class="photo-carousel__slide"
+          class:list={[slide.fit === 'contain' && 'photo-carousel__slide--contain']}
+          data-slide
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${slides.length}`}
+        >
+          <Image
+            src={slide.image}
+            alt=""
+            widths={[640, 1024, 1600, 2200]}
+            sizes="100vw"
+            class="photo-carousel__img"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+          <figcaption class="photo-carousel__caption">
+            <Bilingual en={slide.en} ta={slide.ta} />
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  {/* Controls are present in markup regardless of JS — they simply do
+      nothing until the script attaches its handlers, at which point
+      data-js-ready reveals them. */}
+  <button type="button" class="photo-carousel__arrow photo-carousel__arrow--prev" data-prev aria-label="Previous photo">
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none">
+      <path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+  <button type="button" class="photo-carousel__arrow photo-carousel__arrow--next" data-next aria-label="Next photo">
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none">
+      <path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  <div class="photo-carousel__dots" data-dots role="tablist" aria-label="Choose photo">
+    {
+      slides.map((_, i) => (
+        <button
+          type="button"
+          class="photo-carousel__dot"
+          data-dot={i}
+          role="tab"
+          aria-label={`Photo ${i + 1}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .photo-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* The site's warm paper tone, not literal white — every slide now uses
+       `contain`, so this shows as letterboxing behind most photos, and paper
+       sits better against the rest of the page than a stark white block. */
+    background-color: var(--color-paper);
+  }
+
+  /* --- No-JS state: a plain stacked list of full-width photos. --- */
+  .photo-carousel__track {
+    display: block;
+  }
+
+  /*
+    Height is tied to the viewport rather than derived from width via
+    aspect-ratio, so a very wide browser window can't stretch this into an
+    oversized letterbox strip. It's still meant to read as a proper hero
+    banner — most of the window, not a cramped preview band — just capped so
+    it can't run past the visible viewport on an ordinary laptop screen and
+    force a scroll before a reader even sees the whole image.
+  */
+  .photo-carousel__slide {
+    position: relative;
+    margin: 0;
+    /* 25% taller than the previous 64vh / 640px / 320px. */
+    height: 80vh;
+    max-height: 800px;
+    min-height: 400px;
+    background-color: var(--color-paper);
+  }
+
+  @media (max-width: 40rem) {
+    .photo-carousel__slide {
+      /* 25% taller than the previous 56vh / 460px / 280px. */
+      height: 70vh;
+      max-height: 575px;
+      min-height: 350px;
+    }
+  }
+
+  /* Was `var(--color-paper)` — invisible now that the background is paper
+     too. A visible rule so stacked photos (the no-JS fallback) still read
+     as separate images. */
+  .photo-carousel__slide + .photo-carousel__slide {
+    border-top: 2px solid var(--color-rule-strong);
+  }
+
+  .photo-carousel__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-carousel__slide--contain .photo-carousel__img {
+    object-fit: contain;
+  }
+
+  .photo-carousel__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2.5rem 1.5rem 1.5rem;
+    text-align: center;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0) 70%);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.4);
+  }
+
+  @media (min-width: 48rem) {
+    .photo-carousel__caption {
+      padding: 4rem 3rem 2rem;
+      font-size: 1.35rem;
+    }
+  }
+
+  /* --- Controls: hidden until the script confirms it's actually running. --- */
+  .photo-carousel__arrow,
+  .photo-carousel__dots {
+    display: none;
+  }
+
+  .photo-carousel[data-js-ready] .photo-carousel__arrow,
+  .photo-carousel[data-js-ready] .photo-carousel__dots {
+    display: flex;
+  }
+
+  /* Once JS is driving it, only the active slide should occupy space. */
+  .photo-carousel[data-js-ready] .photo-carousel__track {
+    display: grid;
+  }
+
+  .photo-carousel[data-js-ready] .photo-carousel__slide {
+    grid-area: 1 / 1;
+    border-top: 0;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    pointer-events: none;
+  }
+
+  .photo-carousel[data-js-ready] .photo-carousel__slide[data-active] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .photo-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: -1.375rem;
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.35);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .photo-carousel__arrow:hover {
+    background: rgb(0 0 0 / 0.55);
+    border-color: #fff;
+  }
+
+  .photo-carousel__arrow--prev {
+    left: 1rem;
+  }
+
+  .photo-carousel__arrow--next {
+    right: 1rem;
+  }
+
+  .photo-carousel__dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.9rem;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .photo-carousel__dot {
+    width: 1.4rem;
+    height: 3px;
+    padding: 0;
+    border: 0;
+    background: rgb(255 255 255 / 0.45);
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+
+  .photo-carousel__dot[aria-selected='true'] {
+    background: #fff;
+  }
+</style>
+
+<script>
+  const AUTOPLAY_MS = 6000;
+
+  for (const carousel of document.querySelectorAll<HTMLElement>('[data-carousel]')) {
+    const track = carousel.querySelector<HTMLElement>('[data-track]');
+    const slideEls = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dotEls = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const prevBtn = carousel.querySelector<HTMLButtonElement>('[data-prev]');
+    const nextBtn = carousel.querySelector<HTMLButtonElement>('[data-next]');
+    if (!track || slideEls.length < 2) continue;
+
+    let index = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(next: number) {
+      index = (next + slideEls.length) % slideEls.length;
+      slideEls.forEach((el, i) => {
+        if (i === index) el.setAttribute('data-active', '');
+        else el.removeAttribute('data-active');
+      });
+      dotEls.forEach((el, i) => el.setAttribute('aria-selected', String(i === index)));
+    }
+
+    function stopAutoplay() {
+      if (timer) clearInterval(timer);
+      timer = undefined;
+    }
+
+    function startAutoplay() {
+      if (reduceMotion) return;
+      stopAutoplay();
+      timer = setInterval(() => show(index + 1), AUTOPLAY_MS);
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      show(index - 1);
+      startAutoplay();
+    });
+    nextBtn?.addEventListener('click', () => {
+      show(index + 1);
+      startAutoplay();
+    });
+    dotEls.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        show(i);
+        startAutoplay();
+      });
+    });
+
+    // Autoplay pauses on hover/focus so a reader isn't fighting the carousel
+    // while trying to read a caption or use the controls.
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+    carousel.addEventListener('focusout', startAutoplay);
+
+    show(0);
+    startAutoplay();
+    carousel.setAttribute('data-js-ready', '');
+  }
+</script>

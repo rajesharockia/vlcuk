@@ -3,19 +3,18 @@ import { getCollection } from 'astro:content';
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConstructionBanner from '../components/ConstructionBanner.astro';
-import SiteLogo from '../components/SiteLogo.astro';
 import AboutSection from '../components/AboutSection.astro';
+import LitFestExternalLink from '../components/LitFestExternalLink.astro';
+import PhotoCarousel from '../components/PhotoCarousel.astro';
+import VideoSection from '../components/VideoSection.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DonateCTA from '../components/DonateCTA.astro';
-import Bilingual from '../components/Bilingual.astro';
 import DiscussionCard from '../components/cards/DiscussionCard.astro';
 import EventCard from '../components/cards/EventCard.astro';
 import ReviewCard from '../components/cards/ReviewCard.astro';
 import PostCard from '../components/cards/PostCard.astro';
 
 import { byNewest, bySoonest } from '../lib/content';
-
-const TAGLINE = 'To promote art and artists, beyond the boundaries of language';
 
 const discussions = byNewest(await getCollection('discussions')).slice(0, 3);
 const reviews = byNewest(await getCollection('reviews'));
@@ -34,35 +33,14 @@ const featuredReview = reviews[0];
 <BaseLayout>
   <ConstructionBanner />
 
-  {/* ---------------------------------------------------------------- Hero */}
-  <section class="border-b border-[color:var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-5 py-20 text-center sm:px-8 sm:py-28">
-      <div class="flex justify-center">
-        <SiteLogo variant="hero" eager />
-      </div>
-
-      {/*
-        The tagline is the forum's own wording and is kept verbatim, in
-        English, in both language modes.
-      */}
-      <p
-        class="mx-auto mt-10 max-w-2xl text-[1.25rem] leading-relaxed text-balance italic sm:text-[1.6rem]"
-      >
-        {TAGLINE}
-      </p>
-
-      <div class="mt-11 flex flex-wrap items-center justify-center gap-4">
-        <a href="/discussions/" class="btn btn-outline text-[0.8rem]">
-          <Bilingual k="nav.discussions" />
-        </a>
-        <a href="/donate/" class="btn btn-primary text-[0.8rem]">
-          <Bilingual k="donate.cta" />
-        </a>
-      </div>
-    </div>
-  </section>
+  <PhotoCarousel />
+  <VideoSection />
 
   <AboutSection />
+
+  <div class="pb-16 sm:pb-20">
+    <LitFestExternalLink />
+  </div>
 
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     {/* ------------------------------------------------- Weekly discussions */}

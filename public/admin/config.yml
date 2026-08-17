@@ -88,3 +88,21 @@ collections:
       - { name: "summary_ta", label: "Summary (Tamil)", widget: "text", required: false }
       - { name: "allow_responses", label: "Allow reader responses", widget: "boolean", default: true }
       - { name: "body", label: "Body", widget: "markdown" }
+
+  # ---------------------------------------------------------------
+  # Link-outs to an externally hosted video (YouTube, Vimeo). Shown as a
+  # row of cards on the home page; there is no page of our own for these.
+  - name: "videos"
+    label: "Videos"
+    label_singular: "Video"
+    folder: "src/content/videos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title_en", label: "Title (English)", widget: "string" }
+      - { name: "title_ta", label: "Title (Tamil)", widget: "string", required: false }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: "video_url", label: "Video URL (YouTube / Vimeo link)", widget: "string", required: false, hint: "Leave blank to publish this entry as 'coming soon' until the video is hosted somewhere." }
+      - { name: "thumbnail", label: "Thumbnail (optional — falls back to the video host's own thumbnail if left blank later)", widget: "image", required: false }
+      - { name: "description_en", label: "Description (English)", widget: "text", required: false }
+      - { name: "description_ta", label: "Description (Tamil)", widget: "text", required: false }

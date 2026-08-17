@@ -13,7 +13,7 @@ allow_responses: true
 
 Reading alone is a quiet pleasure. Reading together is something else — an argument, a shared discovery, a way of keeping a literature alive across an ocean. This post opens a conversation among Vishnupuram readers about what the circle has meant to them.
 
-We'd love to hear your reflections. Responses can be added below (or sent to **info@vishnupuram.uk** to be included).
+We'd love to hear your reflections. Responses can be added below (or sent to **Vishnupuramlitcircle@gmail.com** to be included).
 
 *(Placeholder post — replace with a real reader's piece.)*
 

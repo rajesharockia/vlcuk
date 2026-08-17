@@ -39,6 +39,7 @@ npm run dev        # preview locally at http://localhost:4321
    - Events → `src/content/events/`
    - Book reviews → `src/content/reviews/`
    - Blog / readers' conversations → `src/content/blog/`
+   - Videos → `src/content/videos/` (a link to a YouTube/Vimeo video, not a page of its own — shown as a card on the home page)
 3. Copy an existing entry as a template — the fields at the top (the "frontmatter", between the `---` lines) are required. See the samples in each folder.
 4. Preview locally with `npm run dev`.
 5. Commit, push, and open a **pull request**. A maintainer will review and merge.
@@ -73,6 +74,6 @@ Every content type has paired fields — one for Tamil, one for English. Fill in
 
 ## Questions
 
-Open an issue on GitHub or email **info@vishnupuram.uk**.
+Open an issue on GitHub or email **Vishnupuramlitcircle@gmail.com**.
 
 *To promote art and artists, beyond the boundaries of language.*
