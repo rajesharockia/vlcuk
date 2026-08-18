@@ -4,8 +4,8 @@
 # too large to commit to this Git repository. Upload it to YouTube or Vimeo
 # and paste the link into video_url via /admin — the card will pick it up
 # automatically on the next publish, no code changes needed.
-title_en: "Felicitation at Birmingham — Readers and Guests"
-title_ta: "பர்மிங்காம் பாராட்டு விழா — வாசகர்கள், விருந்தினர்கள்"
+title_en: "Birmingham Event — Full Coverage"
+title_ta: "பர்மிங்காம் நிகழ்வு — முழு பதிவு"
 date: 2026-08-03
 video_url: ""
 thumbnail: ""
