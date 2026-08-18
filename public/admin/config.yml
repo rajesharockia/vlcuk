@@ -70,12 +70,14 @@ collections:
       - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
       - { name: "cover_image", label: "Cover image", widget: "image", required: false }
       - { name: "reviewer", label: "Reviewer", widget: "string", required: false }
+      - { name: "source_name", label: "Original source (e.g. Literary Hub) — leave blank for an original Vishnupuram review", widget: "string", required: false }
+      - { name: "source_url", label: "Link to the original piece", widget: "string", required: false }
       - { name: "body", label: "Body", widget: "markdown" }
 
   # ---------------------------------------------------------------
   - name: "blog"
-    label: "Readers' Conversations"
-    label_singular: "Post"
+    label: "Articles"
+    label_singular: "Article"
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"

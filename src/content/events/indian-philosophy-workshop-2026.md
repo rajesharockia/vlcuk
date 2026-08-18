@@ -7,7 +7,7 @@ status: "past"
 venue_en: "University of Essex, Colchester"
 venue_ta: "எசெக்ஸ் பல்கலைக்கழகம், கோல்செஸ்டர்"
 featured: false
-image: ""
+image: "/src/assets/images/philosophy-workshop-2026.jpg"
 summary_en: "Two days on Indian philosophical thought — not as a book to be studied, but as the practice of philosophising."
 summary_ta: "இந்தியத் தத்துவச் சிந்தனை குறித்த இரண்டு நாட்கள் — படித்து முடிக்க வேண்டிய நூலாக அல்ல, 'தத்துவம் செய்தல்' என்னும் பயிற்சியாக."
 ---

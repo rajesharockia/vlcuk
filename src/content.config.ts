@@ -91,6 +91,12 @@ const reviews = defineCollection({
     date,
     cover_image: optionalString,
     reviewer: optionalString,
+    // For a piece that originated elsewhere (a translator's essay, a press
+    // interview) rather than an original Vishnupuram review — both blank
+    // for our own writing. When set, the card and detail page credit and
+    // link to the original rather than presenting the piece as our own.
+    source_name: optionalString,
+    source_url: optionalUrl,
   }),
 });
 

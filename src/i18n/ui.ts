@@ -10,15 +10,15 @@ export const ui = {
   'nav.home': { en: 'Home', ta: 'முகப்பு' },
 
   'banner.construction': {
-    en: 'This site has just launched and is still being completed — some pages are placeholders for now.',
-    ta: 'இந்த இணையதளம் புதிதாகத் தொடங்கப்பட்டுள்ளது, இன்னும் நிறைவடையவில்லை — சில பக்கங்கள் தற்காலிகமானவை.',
+    en: 'This site has not officially launched yet and is still being built — some pages are placeholders for now.',
+    ta: 'இந்த இணையதளம் இன்னும் அதிகாரப்பூர்வமாகத் தொடங்கப்படவில்லை, தொடர்ந்து உருவாக்கப்பட்டு வருகிறது — சில பக்கங்கள் தற்காலிகமானவை.',
   },
   'banner.dismiss': { en: 'Dismiss this notice', ta: 'இந்த அறிவிப்பை மூடு' },
   'nav.discussions': { en: 'Weekly Discussions', ta: 'வாராந்திர வாசிப்பு' },
   'nav.events': { en: 'Events', ta: 'நிகழ்வுகள்' },
   'nav.reviews': { en: 'Book Reviews', ta: 'நூல் மதிப்புரைகள்' },
-  'nav.blog': { en: "Readers' Conversations", ta: 'வாசகர் உரையாடல்கள்' },
-  'nav.donate': { en: 'Donate', ta: 'நன்கொடை' },
+  'nav.blog': { en: 'Articles', ta: 'கட்டுரைகள்' },
+  'nav.videos': { en: 'Videos', ta: 'காணொளிகள்' },
   'nav.contact': { en: 'Contact', ta: 'தொடர்பு' },
   'nav.menu': { en: 'Menu', ta: 'பட்டி' },
   'nav.primary': { en: 'Primary', ta: 'முதன்மை' },
@@ -37,7 +37,7 @@ export const ui = {
   'home.latestDiscussions': { en: 'From the Weekly Circle', ta: 'வாராந்திர வட்டத்திலிருந்து' },
   'home.featuredReview': { en: 'From the Bookshelf', ta: 'நூல் அலமாரியிலிருந்து' },
   'home.upcomingEvents': { en: 'Upcoming Events', ta: 'வரவிருக்கும் நிகழ்வுகள்' },
-  'home.conversations': { en: "Readers' Conversations", ta: 'வாசகர் உரையாடல்கள்' },
+  'home.conversations': { en: 'Articles', ta: 'கட்டுரைகள்' },
   'home.videos': { en: 'Videos', ta: 'காணொளிகள்' },
 
   'videos.empty': {
@@ -58,6 +58,8 @@ export const ui = {
   'review.translator': { en: 'Translator', ta: 'மொழிபெயர்ப்பாளர்' },
   'review.reviewer': { en: 'Reviewed by', ta: 'மதிப்புரை' },
   'review.book': { en: 'Book', ta: 'நூல்' },
+  'review.originallyPublished': { en: 'Originally published on', ta: 'முதலில் வெளியிடப்பட்டது' },
+  'review.readFull': { en: 'Read the full piece', ta: 'முழுக் கட்டுரையையும் வாசிக்க' },
 
   'blog.author': { en: 'By', ta: 'எழுதியவர்' },
   'blog.responses': { en: 'Reader Responses', ta: 'வாசகர் பதில்கள்' },
@@ -74,7 +76,6 @@ export const ui = {
   'common.skipToContent': { en: 'Skip to content', ta: 'உள்ளடக்கத்திற்குச் செல்ல' },
 
   'donate.title': { en: 'Support Vishnupuram', ta: 'விஷ்ணுபுரத்தை ஆதரியுங்கள்' },
-  'donate.cta': { en: 'Support us', ta: 'எங்களை ஆதரியுங்கள்' },
   'donate.paypal': { en: 'Donate via PayPal', ta: 'PayPal வழியாக நன்கொடை' },
   'donate.stripe': { en: 'Donate via Card (Stripe)', ta: 'அட்டை வழியாக நன்கொடை (Stripe)' },
   'donate.bank': { en: 'Bank transfer', ta: 'வங்கிப் பரிமாற்றம்' },

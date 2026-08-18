@@ -6,7 +6,7 @@ status: "past"
 venue_en: "Consulate General of India, Birmingham"
 venue_ta: "இந்தியத் துணைத் தூதரகம், பர்மிங்காம்"
 featured: false
-image: ""
+image: "/src/assets/images/felicitation-birmingham-2026.jpg"
 summary_en: "A felicitation and literary gathering for Jeyamohan, where he spoke on 'Culture — Both a Burden and Wings'."
 summary_ta: "ஜெயமோகனுக்கான பாராட்டு விழாவும் இலக்கியக் கூடுகையும். 'பண்பாடு — சுமையும் சிறகும்' என்னும் தலைப்பில் அவர் உரையாற்றினார்."
 ---

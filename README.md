@@ -4,7 +4,7 @@ Website for **Vishnupuram UK**, a Tamil literary forum organised by the writer J
 
 > *To promote art and artists, beyond the boundaries of language.*
 
-The site publishes weekly reading discussions, events (including LitFest London 2027), reviews of books written and translated by Tamil authors, and a readers' conversations blog. All content is bilingual — Tamil and English.
+The site publishes weekly reading discussions, events (including LitFest London 2027), reviews of books written and translated by Tamil authors, and articles from readers. All content is bilingual — Tamil and English.
 
 ---
 
@@ -63,7 +63,7 @@ src/
     discussions/     Weekly reading discussions (Markdown)
     events/          Events, incl. featured LitFest London 2027
     reviews/         Book reviews
-    blog/            Readers' conversations
+    blog/            Articles
   layouts/           Shared page shells
   pages/             Routes (home, events, reviews, etc.)
   components/        Header, footer, language toggle, cards

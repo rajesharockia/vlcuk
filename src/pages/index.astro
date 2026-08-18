@@ -8,7 +8,6 @@ import LitFestExternalLink from '../components/LitFestExternalLink.astro';
 import PhotoCarousel from '../components/PhotoCarousel.astro';
 import VideoSection from '../components/VideoSection.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import DonateCTA from '../components/DonateCTA.astro';
 import DiscussionCard from '../components/cards/DiscussionCard.astro';
 import EventCard from '../components/cards/EventCard.astro';
 import ReviewCard from '../components/cards/ReviewCard.astro';
@@ -38,15 +37,21 @@ const featuredReview = reviews[0];
 
   <AboutSection />
 
-  <div class="pb-16 sm:pb-20">
+  <div class="pb-12 sm:pb-16">
     <LitFestExternalLink />
   </div>
 
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+  {/* Narrower than the site's usual max-w-6xl: these two lists are a single
+      text-led entry apiece right now, and stretching them to the full page
+      width just left a bare gutter beside short, imageless content. Capping
+      the column at measure-wide makes the section hug what it actually
+      contains — and still has room to widen gracefully once more entries
+      exist. */}
+  <div class="mx-auto max-w-[var(--measure-wide)] px-5 sm:px-8">
     {/* ------------------------------------------------- Weekly discussions */}
     {
       discussions.length > 0 && (
-        <section class="py-16 sm:py-20">
+        <section class="py-12 sm:py-16">
           <SectionHeading k="home.latestDiscussions" href="/discussions/" />
           {discussions.map((entry) => (
             <DiscussionCard entry={entry} />
@@ -58,7 +63,7 @@ const featuredReview = reviews[0];
     {/* ---------------------------------------------------- Featured review */}
     {
       featuredReview && (
-        <section class="py-16 sm:py-20">
+        <section class="py-12 sm:py-16">
           <SectionHeading k="home.featuredReview" href="/reviews/" />
           <ReviewCard entry={featuredReview} feature />
         </section>
@@ -86,11 +91,11 @@ const featuredReview = reviews[0];
     )
   }
 
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+  <div class="mx-auto max-w-[var(--measure-wide)] px-5 sm:px-8">
     {/* -------------------------------------------- Readers' conversations */}
     {
       posts.length > 0 && (
-        <section class="py-16 sm:py-20">
+        <section class="py-12 sm:py-16">
           <SectionHeading k="home.conversations" href="/blog/" />
           {posts.map((entry) => (
             <PostCard entry={entry} />
@@ -99,6 +104,4 @@ const featuredReview = reviews[0];
       )
     }
   </div>
-
-  <DonateCTA />
 </BaseLayout>

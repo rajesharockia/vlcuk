@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import VideoCard from '../../components/cards/VideoCard.astro';
+import { byNewest } from '../../lib/content';
+import { t } from '../../i18n/ui';
+
+const entries = byNewest(await getCollection('videos'));
+---
+
+<BaseLayout title={t('nav.videos').en}>
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="border-b border-[color:var(--color-rule)] pb-8">
+      <h1 class="text-[2rem] leading-tight font-medium sm:text-[2.8rem]">
+        <Bilingual k="nav.videos" />
+      </h1>
+    </header>
+
+    {
+      entries.length > 0 ? (
+        <div class="video-grid mt-10">
+          {entries.map((entry) => (
+            <VideoCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="py-16 text-[color:var(--color-ink-faint)]">
+          <Bilingual k="videos.empty" />
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem 1.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .video-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .video-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

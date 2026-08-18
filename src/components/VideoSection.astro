@@ -12,20 +12,18 @@
  * be attached later, not to invent placeholder video content.
  */
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 
 import Bilingual from './Bilingual.astro';
 import SectionHeading from './SectionHeading.astro';
+import VideoCard from './cards/VideoCard.astro';
 import { byNewest } from '../lib/content';
-import { resolveImage } from '../lib/images';
-import { autoThumbnail } from '../lib/video';
 
 const videos = byNewest(await getCollection('videos')).slice(0, 8);
 ---
 
 <div class="mx-auto max-w-6xl px-5 sm:px-8">
-  <section class="py-16 sm:py-20">
-    <SectionHeading k="home.videos" />
+  <section class="py-12 sm:py-16">
+    <SectionHeading k="home.videos" href="/videos/" />
 
     {
       videos.length === 0 ? (
@@ -33,64 +31,46 @@ const videos = byNewest(await getCollection('videos')).slice(0, 8);
           <Bilingual k="videos.empty" />
         </p>
       ) : (
-        <div class="video-row">
-          {videos.map((entry) => {
-            const { title_en, title_ta, video_url, thumbnail } = entry.data;
-            const localThumb = resolveImage(thumbnail);
-            const remoteThumb = localThumb ? undefined : autoThumbnail(video_url);
-            // No link yet: rendered as a plain, non-interactive card rather
-            // than an <a> with nowhere to go — a div can't take href/target/
-            // rel at all, so those are only spread in when there's a real URL.
-            const Tag = video_url ? 'a' : 'div';
-            const linkAttrs = video_url
-              ? { href: video_url, target: '_blank', rel: 'noopener noreferrer' }
-              : {};
-            return (
-              <Tag
-                class="video-card"
-                class:list={[!video_url && 'video-card--pending']}
-                {...linkAttrs}
-              >
-                <span class="video-card__thumb">
-                  {localThumb ? (
-                    <Image
-                      src={localThumb}
-                      alt=""
-                      widths={[300, 600]}
-                      sizes="280px"
-                      class="video-card__img"
-                      loading="lazy"
-                    />
-                  ) : remoteThumb ? (
-                    <img src={remoteThumb} alt="" class="video-card__img" loading="lazy" />
-                  ) : (
-                    <span class="video-card__placeholder" aria-hidden="true">
-                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                        <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.4" />
-                        <path d="M11.5 9.5l8 4.5-8 4.5z" fill="currentColor" />
-                      </svg>
-                    </span>
-                  )}
-                  {video_url ? (
-                    <span class="video-card__play" aria-hidden="true">
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <circle cx="9" cy="9" r="9" fill="rgb(0 0 0 / 0.55)" />
-                        <path d="M7 5.5l6 3.5-6 3.5z" fill="#fff" />
-                      </svg>
-                    </span>
-                  ) : (
-                    <span class="video-card__badge">
-                      <Bilingual k="videos.comingSoon" />
-                    </span>
-                  )}
-                </span>
+        <div class="video-carousel" data-video-carousel>
+          {/*
+            Same left/right arrow pattern as the photo carousel above, but a
+            single scrollable row rather than one full-bleed slide at a time
+            — video thumbnails are small enough that several sit side by
+            side, so "next" means "scroll along," not "replace." Arrows are
+            an enhancement: without JS the row is still natively scrollable
+            by touch, trackpad, or drag, and the script hides an arrow
+            entirely once there's nothing left in that direction to reach.
+          */}
+          <button
+            type="button"
+            class="video-carousel__arrow video-carousel__arrow--prev"
+            data-video-prev
+            aria-label="Previous videos"
+            hidden
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none">
+              <path d="M11 4l-5 5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
 
-                <span class="video-card__title">
-                  <Bilingual en={title_en} ta={title_ta} />
-                </span>
-              </Tag>
-            );
-          })}
+          <div class="video-row" data-video-track>
+            {videos.map((entry) => (
+              <div class="video-row__item">
+                <VideoCard entry={entry} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            class="video-carousel__arrow video-carousel__arrow--next"
+            data-video-next
+            aria-label="Next videos"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none">
+              <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
         </div>
       )
     }
@@ -98,106 +78,122 @@ const videos = byNewest(await getCollection('videos')).slice(0, 8);
 </div>
 
 <style>
+  .video-carousel {
+    position: relative;
+    /* Room for the arrow buttons to sit just outside the row itself. */
+    margin-inline: -0.5rem;
+    padding-inline: 0.5rem;
+  }
+
   .video-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem 1.25rem;
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    padding-block: 0.25rem;
+    /* Hide the scrollbar itself — the arrows and native touch/trackpad
+       scrolling are the intended ways to move through the row, a visible
+       scrollbar here would just be visual noise. */
+    scrollbar-width: none;
+  }
+
+  .video-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .video-row__item {
+    flex: 0 0 auto;
+    width: 12rem;
+    scroll-snap-align: start;
   }
 
   @media (min-width: 40rem) {
-    .video-row {
-      grid-template-columns: repeat(3, 1fr);
+    .video-row__item {
+      width: 14.5rem;
     }
   }
 
   @media (min-width: 64rem) {
-    .video-row {
-      grid-template-columns: repeat(4, 1fr);
+    .video-row__item {
+      width: 16rem;
     }
   }
 
-  .video-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .video-card__thumb {
-    position: relative;
-    display: block;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background-color: var(--color-paper-sunk);
-    border: 1px solid var(--color-rule);
-  }
-
-  .video-card__img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 250ms ease;
-  }
-
-  .video-card:hover .video-card__img {
-    transform: scale(1.04);
-  }
-
-  .video-card__placeholder {
+  .video-carousel__arrow {
+    position: absolute;
+    top: 40%;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: -1.25rem;
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 999px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgb(31 27 22 / 0.12);
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .video-carousel__arrow:hover {
+    border-color: var(--color-accent);
     color: var(--color-accent);
   }
 
-  .video-card__play {
-    position: absolute;
-    left: 0.6rem;
-    bottom: 0.6rem;
+  .video-carousel__arrow[hidden] {
+    display: none;
   }
 
-  .video-card__badge {
-    position: absolute;
-    left: 0.6rem;
-    bottom: 0.6rem;
-    padding: 0.25em 0.6em;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #fff;
-    background-color: var(--color-accent);
+  .video-carousel__arrow--prev {
+    left: -0.5rem;
   }
 
-  /* No link yet: no pointer cursor, no hover lift — it isn't clickable. */
-  .video-card--pending {
-    cursor: default;
+  .video-carousel__arrow--next {
+    right: -0.5rem;
   }
 
-  .video-card--pending .video-card__img,
-  .video-card--pending .video-card__title {
-    opacity: 0.75;
+  @media (min-width: 40rem) {
+    .video-carousel__arrow--prev {
+      left: -1.25rem;
+    }
+    .video-carousel__arrow--next {
+      right: -1.25rem;
+    }
   }
 
-  .video-card--pending:hover .video-card__img {
-    transform: none;
-  }
-
-  .video-card--pending:hover .video-card__title {
-    color: var(--color-ink);
-  }
-
-  .video-card__title {
-    display: block;
-    margin-top: 0.65rem;
-    font-size: 0.92rem;
-    line-height: 1.4;
-    color: var(--color-ink);
-    transition: color 150ms ease;
-  }
-
-  .video-card:hover .video-card__title {
-    color: var(--color-accent);
-  }
 </style>
+
+<script>
+  for (const carousel of document.querySelectorAll<HTMLElement>('[data-video-carousel]')) {
+    const track = carousel.querySelector<HTMLElement>('[data-video-track]');
+    const prevBtn = carousel.querySelector<HTMLButtonElement>('[data-video-prev]');
+    const nextBtn = carousel.querySelector<HTMLButtonElement>('[data-video-next]');
+    if (!track || !prevBtn || !nextBtn) continue;
+
+    // Scrolls by roughly one screenful of cards, same "page at a time" feel
+    // as the photo carousel's slide-to-slide steps.
+    function scrollByPage(direction: 1 | -1) {
+      track!.scrollBy({ left: direction * track!.clientWidth * 0.9, behavior: 'smooth' });
+    }
+
+    prevBtn.addEventListener('click', () => scrollByPage(-1));
+    nextBtn.addEventListener('click', () => scrollByPage(1));
+
+    // An arrow is only shown while there's actually somewhere left to go in
+    // that direction — no point offering a "previous" button at the start
+    // of the row, or a "next" one once everything is already in view.
+    function updateArrows() {
+      const maxScroll = track!.scrollWidth - track!.clientWidth;
+      prevBtn!.hidden = track!.scrollLeft <= 4;
+      nextBtn!.hidden = maxScroll <= 4 || track!.scrollLeft >= maxScroll - 4;
+    }
+
+    track.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+  }
+</script>

@@ -7,7 +7,7 @@ status: past
 venue_en: University of Essex, Colchester
 venue_ta: எசெக்ஸ் பல்கலைக்கழகம், கோல்செஸ்டர்
 featured: false
-image: ""
+image: "/src/assets/images/novel-writing-workshop-2026.jpg"
 summary_en: Two days on how a novel is built and written, working through
   character, story, and event.
 summary_ta: ஒரு புதினம் எவ்வாறு கட்டமைக்கப்படுகிறது, எவ்வாறு எழுதப்படுகிறது

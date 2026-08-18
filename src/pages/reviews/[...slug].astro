@@ -32,6 +32,8 @@ const {
   reviewer,
   date,
   cover_image,
+  source_name,
+  source_url,
 } = entry.data;
 
 const cover = resolveImage(cover_image);
@@ -53,6 +55,20 @@ const hasBookTitle = Boolean(book_title_en || book_title_ta);
         hasBookTitle && (
           <p class="mt-4 text-[1.2rem] italic text-[color:var(--color-ink-muted)]">
             <Bilingual en={book_title_en} ta={book_title_ta} />
+          </p>
+        )
+      }
+
+      {
+        source_name && (
+          <p class="mt-4 border-l-2 border-[color:var(--color-accent)] py-1 pl-4 text-[0.92rem] text-[color:var(--color-ink-muted)]">
+            <Bilingual k="review.originallyPublished" /> <strong>{source_name}</strong>.{' '}
+            {source_url && (
+              <a href={source_url} class="link-accent" target="_blank" rel="noopener noreferrer">
+                <Bilingual k="review.readFull" />
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            )}
           </p>
         )
       }

@@ -9,7 +9,8 @@ const explore = [
   { href: '/events/', key: 'nav.events' },
   { href: '/reviews/', key: 'nav.reviews' },
   { href: '/blog/', key: 'nav.blog' },
-  { href: '/donate/', key: 'nav.donate' },
+  // Donate is deliberately not linked anywhere right now — see the matching
+  // note in Header.astro.
   { href: '/contact/', key: 'nav.contact' },
 ] as const;
 
@@ -43,10 +44,6 @@ const year = new Date().getFullYear();
         <p class="mt-5 max-w-xs text-[0.95rem] italic text-[color:var(--color-ink-muted)]">
           {TAGLINE}
         </p>
-
-        <a href="/donate/" class="btn btn-primary mt-7 text-[0.8rem]">
-          <Bilingual k="donate.cta" />
-        </a>
       </div>
 
       <!-- Explore -->

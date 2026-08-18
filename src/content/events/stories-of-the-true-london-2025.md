@@ -6,7 +6,7 @@ status: "past"
 venue_en: "October Gallery, Central London"
 venue_ta: "ஆக்டோபர் கேலரி, மத்திய லண்டன்"
 featured: false
-image: ""
+image: "/src/assets/images/stories-of-the-true-panel-2025.jpg"
 summary_en: "An evening on the book's South Indian translations, with a panel of scholars representing the Telugu, Kannada, and Tamil editions. More than a hundred readers attended."
 summary_ta: "நூலின் தென்னிந்திய மொழிபெயர்ப்புகள் குறித்த ஒரு மாலை. தெலுங்கு, கன்னடம், தமிழ்ப் பதிப்புகளைப் பிரதிநிதித்து அறிஞர்கள் குழு கலந்துரையாடியது. நூறுக்கும் மேற்பட்ட வாசகர்கள் கலந்துகொண்டனர்."
 ---

@@ -10,7 +10,7 @@ Best for editors who just want to write.
 
 1. Go to **https://vishnupuram.uk/admin** (or the deploy preview URL).
 2. Log in with your GitHub account. (Ask a maintainer to be added to the repository first.)
-3. Pick a collection in the sidebar: **Weekly Discussions**, **Events**, **Book Reviews**, or **Blog**.
+3. Pick a collection in the sidebar: **Weekly Discussions**, **Events**, **Book Reviews**, or **Articles**.
 4. Click **New**, fill in the fields (both the Tamil and English boxes where shown), and add images by dragging them in.
 5. Click **Publish**. This automatically saves your work to the repository and the site rebuilds within a minute or two.
 
@@ -38,7 +38,7 @@ npm run dev        # preview locally at http://localhost:4321
    - Weekly discussions → `src/content/discussions/`
    - Events → `src/content/events/`
    - Book reviews → `src/content/reviews/`
-   - Blog / readers' conversations → `src/content/blog/`
+   - Articles → `src/content/blog/`
    - Videos → `src/content/videos/` (a link to a YouTube/Vimeo video, not a page of its own — shown as a card on the home page)
 3. Copy an existing entry as a template — the fields at the top (the "frontmatter", between the `---` lines) are required. See the samples in each folder.
 4. Preview locally with `npm run dev`.

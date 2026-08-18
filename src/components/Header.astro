@@ -17,9 +17,10 @@ const nav: NavItem[] = [
   { href: '/events/', key: 'nav.events' },
   { href: '/reviews/', key: 'nav.reviews' },
   { href: '/blog/', key: 'nav.blog' },
-  // Donate sits before Contact, matching the footer's "Explore" order.
-  // Shown at every width — the header bar no longer carries a second copy.
-  { href: '/donate/', key: 'nav.donate', accent: true },
+  { href: '/videos/', key: 'nav.videos' },
+  // Donate is deliberately not linked anywhere on the site right now — not
+  // needed at the moment. The page itself (src/pages/donate.astro) is still
+  // there, untouched, just unlinked, so it's a one-line change to bring back.
   { href: '/contact/', key: 'nav.contact' },
 ];
 

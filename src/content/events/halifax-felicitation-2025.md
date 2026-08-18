@@ -6,7 +6,7 @@ status: "past"
 venue_en: "Halifax"
 venue_ta: "ஹாலிஃபாக்ஸ்"
 featured: false
-image: ""
+image: "/src/assets/images/felicitation-halifax-2025.png"
 summary_en: "A literary introduction and appreciation ceremony for the writers Jeyamohan and J. Ajithan, hosted by the Northern Tamils Association of Britain."
 summary_ta: "பிரிட்டன் வட தமிழர் சங்கம் நடத்திய இலக்கிய அறிமுக மற்றும் பாராட்டு விழா — எழுத்தாளர்கள் ஜெயமோகன், ஜெ. அஜிதன் ஆகியோருக்கு."
 ---
