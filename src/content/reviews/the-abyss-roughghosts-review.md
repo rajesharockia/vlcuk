@@ -6,6 +6,11 @@
 # specialising in translated fiction, and the writer's name could not be
 # confirmed from the published record. Fill it in rather than guessing.
 # The date is the one in the post's own URL.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "Of Beggars and Kings: The Abyss by Jeyamohan"
 title_ta: "பிச்சைக்காரர்களும் அரசர்களும்: ஜெயமோகனின் தி அபிஸ்"
 book_title_en: "The Abyss"
@@ -13,7 +18,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-05-01
-cover_image: ""
+cover_image: "/src/assets/images/the-abyss-cover.jpg"
 reviewer: ""
 source_name: "roughghosts"
 source_url: "https://roughghosts.com/2026/05/01/of-beggars-and-kings-the-abyss-by-jeyamohan/"

@@ -6,6 +6,11 @@
 # appeared in Historical Novels Review issue 117, an August 2026 issue; the
 # 1st is a stand-in for a day we do not know. Correct it to the real date.
 # reviewer is blank pending confirmation of the byline.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "White Elephant — reviewed in Historical Novels Review"
 title_ta: "வெள்ளை யானை — ஹிஸ்டாரிக்கல் நாவல்ஸ் ரிவ்யூ இதழில் வெளியான மதிப்புரை"
 book_title_en: "White Elephant"
@@ -13,7 +18,7 @@ book_title_ta: "வெள்ளை யானை"
 author: "Jeyamohan"
 translator: "Priyamvada Ramkumar"
 date: 2026-08-01
-cover_image: ""
+cover_image: "/src/assets/images/white-elephant-cover.jpg"
 reviewer: ""
 source_name: "Historical Novel Society"
 source_url: "https://historicalnovelsociety.org/reviews/white-elephant/"

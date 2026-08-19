@@ -4,6 +4,11 @@
 #
 # reviewer is blank pending confirmation of the writer's name. The date is
 # the one in the post's own URL.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "Book of the Month: Jeyamohan"
 title_ta: "மாதத்தின் நூல்: ஜெயமோகன்"
 book_title_en: "The Abyss"
@@ -11,7 +16,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-06-30
-cover_image: ""
+cover_image: "/src/assets/images/the-abyss-cover.jpg"
 reviewer: ""
 source_name: "A Year of Reading the World"
 source_url: "https://ayearofreadingtheworld.com/2026/06/30/book-of-the-month-jeyamohan/"

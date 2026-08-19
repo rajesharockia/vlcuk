@@ -4,6 +4,11 @@
 #
 # reviewer is blank because Scroll.in's byline for the piece could not be
 # confirmed from the published record. Fill it in rather than guessing.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "Jeyamohan’s Novel ‘The Abyss’ Is Frightening, Funny, and Everything in Between"
 title_ta: "ஜெயமோகனின் ‘தி அபிஸ்’ — அச்சுறுத்தும், நகைக்க வைக்கும், அவற்றுக்கு இடையிலான அனைத்தும்"
 book_title_en: "The Abyss"
@@ -11,7 +16,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2023-04-29
-cover_image: ""
+cover_image: "/src/assets/images/the-abyss-cover.jpg"
 reviewer: ""
 source_name: "Scroll.in"
 source_url: "https://scroll.in/article/1047293/jeyamohans-novel-the-abyss-is-frightening-funny-and-everything-in-between"

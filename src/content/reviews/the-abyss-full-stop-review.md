@@ -7,6 +7,11 @@
 # here has read the review in full yet. Anyone who does: please expand the
 # body to say what Mitchell actually argues, as the Literary Hub entry does.
 # Reviewer and date are Full Stop's own, taken from its URL for the piece.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "The Abyss — reviewed in Full Stop"
 title_ta: "தி அபிஸ் — ஃபுல் ஸ்டாப் இதழில் வெளியான மதிப்புரை"
 book_title_en: "The Abyss"
@@ -14,7 +19,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-05-29
-cover_image: ""
+cover_image: "/src/assets/images/the-abyss-cover.jpg"
 reviewer: "Jess Jensen Mitchell"
 source_name: "Full Stop"
 source_url: "https://www.full-stop.net/2026/05/29/reviews/jessjensenmitchell/the-abyss-jeyamohan/"

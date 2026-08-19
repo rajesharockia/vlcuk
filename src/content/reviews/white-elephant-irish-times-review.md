@@ -5,6 +5,11 @@
 # reviewer is blank because the byline could not be confirmed from the
 # published record; the Irish Times piece is behind a paywall. Anyone with
 # access: please add the reviewer's name. The date is the one in its URL.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "White Elephant: A Big Novel with Big Questions"
 title_ta: "வெள்ளை யானை: பெரிய கேள்விகளைக் கொண்ட பெரிய நாவல்"
 book_title_en: "White Elephant"
@@ -12,7 +17,7 @@ book_title_ta: "வெள்ளை யானை"
 author: "Jeyamohan"
 translator: "Priyamvada Ramkumar"
 date: 2026-08-08
-cover_image: ""
+cover_image: "/src/assets/images/white-elephant-cover.jpg"
 reviewer: ""
 source_name: "The Irish Times"
 source_url: "https://www.irishtimes.com/culture/books/review/2026/08/08/white-elephant-a-big-novel-with-big-questions/"

@@ -5,6 +5,11 @@
 # CHECK BEFORE RELYING ON IT: the date below is APPROXIMATE — the review ran
 # in a July 2026 issue, and the 1st is a stand-in for a day we do not know.
 # reviewer is intentionally blank: Publishers Weekly reviews are unsigned.
+# The cover file named below is not in the repository yet. Save the
+# publisher's cover art to that exact path (src/assets/images/) and this
+# entry picks it up on the next build — no other change needed. Until then
+# the build logs a "not found" warning and the card shows its placeholder;
+# nothing breaks.
 title_en: "White Elephant — reviewed in Publishers Weekly"
 title_ta: "வெள்ளை யானை — பப்ளிஷர்ஸ் வீக்லி இதழில் வெளியான மதிப்புரை"
 book_title_en: "White Elephant"
@@ -12,7 +17,7 @@ book_title_ta: "வெள்ளை யானை"
 author: "Jeyamohan"
 translator: "Priyamvada Ramkumar"
 date: 2026-07-01
-cover_image: ""
+cover_image: "/src/assets/images/white-elephant-cover.jpg"
 reviewer: ""
 source_name: "Publishers Weekly"
 source_url: "https://www.publishersweekly.com/9780374619428"
