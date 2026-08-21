@@ -18,7 +18,7 @@ book_title_ta: "வெள்ளை யானை"
 author: "Jeyamohan"
 translator: "Priyamvada Ramkumar"
 date: 2026-08-01
-cover_image: "/src/assets/images/white-elephant-cover.jpg"
+cover_image: "/src/assets/images/white-elephant-cover.avif"
 reviewer: ""
 source_name: "Historical Novel Society"
 source_url: "https://historicalnovelsociety.org/reviews/white-elephant/"

@@ -17,7 +17,7 @@ book_title_ta: "வெள்ளை யானை"
 author: "Jeyamohan"
 translator: "Priyamvada Ramkumar"
 date: 2026-08-08
-cover_image: "/src/assets/images/white-elephant-cover.jpg"
+cover_image: "/src/assets/images/white-elephant-cover.avif"
 reviewer: ""
 source_name: "The Irish Times"
 source_url: "https://www.irishtimes.com/culture/books/review/2026/08/08/white-elephant-a-big-novel-with-big-questions/"

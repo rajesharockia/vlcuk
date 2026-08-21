@@ -1,16 +1,12 @@
 ---
-# PLACEHOLDER — several fields are genuinely uncertain, not just video_url.
-# Source file: "Literary 3 Final out.mp4" was still mid-download (.crdownload,
-# 1.76 GB and growing) when this entry was created, so its actual content
-# couldn't be checked. Title, date, and description below are guesses from
-# the filename alone — please correct all three via /admin once you know
-# what this recording actually is, alongside adding the real video_url once
-# it's uploaded to YouTube or Vimeo (also too large for this repository).
-title_en: "Literary Circle Recording III"
-title_ta: "இலக்கிய வட்டப் பதிவு — III"
-date: 2026-08-18
-video_url: ""
+# Title, date, and description below are now confirmed from the video's own
+# YouTube listing — this was the source file previously named
+# "Literary 3 Final out.mp4".
+title_en: "Vishnupuram Literary Circle UK Event — 6 December 2025 — Intro & Young Speakers"
+title_ta: "விஷ்ணுபுரம் இலக்கிய வட்டம் UK நிகழ்வு — 2025 டிசம்பர் 6 — அறிமுகமும் இளம் பேச்சாளர்களும்"
+date: 2025-12-06
+video_url: "https://youtu.be/t5mdrGvrYSI"
 thumbnail: ""
-description_en: "Recording from a Vishnupuram UK literary circle session. Details to be confirmed."
-description_ta: "விஷ்ணுபுரம் UK இலக்கிய வட்டச் சந்திப்பின் பதிவு. விவரங்கள் உறுதி செய்யப்பட வேண்டும்."
+description_en: "The opening segment from the Vishnupuram UK literary circle's 6 December 2025 event in London, featuring introductions and young speakers."
+description_ta: "2025 டிசம்பர் 6 அன்று லண்டனில் நடைபெற்ற விஷ்ணுபுரம் UK இலக்கிய வட்ட நிகழ்வின் தொடக்கப் பகுதி — அறிமுகங்களும் இளம் பேச்சாளர்களும்."
 ---

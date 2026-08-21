@@ -18,7 +18,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-05-01
-cover_image: "/src/assets/images/the-abyss-cover.jpg"
+cover_image: "/src/assets/images/the-abyss-cover.webp"
 reviewer: ""
 source_name: "roughghosts"
 source_url: "https://roughghosts.com/2026/05/01/of-beggars-and-kings-the-abyss-by-jeyamohan/"

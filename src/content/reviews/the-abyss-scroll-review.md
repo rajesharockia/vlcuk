@@ -16,7 +16,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2023-04-29
-cover_image: "/src/assets/images/the-abyss-cover.jpg"
+cover_image: "/src/assets/images/the-abyss-cover.webp"
 reviewer: ""
 source_name: "Scroll.in"
 source_url: "https://scroll.in/article/1047293/jeyamohans-novel-the-abyss-is-frightening-funny-and-everything-in-between"

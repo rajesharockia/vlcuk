@@ -1,13 +1,9 @@
 ---
-# PLACEHOLDER — dummy entry, video_url intentionally left blank.
-# Add the real video_url via /admin once this recording is hosted on
-# YouTube or Vimeo — the card will pick it up automatically on the next
-# publish, no code changes needed.
-title_en: "Birmingham Event — Q&A Session"
-title_ta: "பர்மிங்காம் நிகழ்வு — கேள்வி பதில் அமர்வு"
-date: 2026-08-03
-video_url: ""
+title_en: "Discussion and Q&A with Jeyamohan — Consulate General of India, Birmingham"
+title_ta: "உரையாடலும் கேள்வி-பதிலும், ஜெயமோகன் — இந்தியத் துணைத் தூதரகம், பர்மிங்காம்"
+date: 2026-08-02
+video_url: "https://youtu.be/hRRhLS_yFhE"
 thumbnail: ""
-description_en: "The question-and-answer segment from the felicitation evening at the Consulate General of India, Birmingham."
-description_ta: "பர்மிங்காமில் உள்ள இந்தியத் துணைத் தூதரகத்தில் நடைபெற்ற பாராட்டு விழா மாலையின் கேள்வி-பதில் பகுதி."
+description_en: "The question-and-answer session that followed Jeyamohan's speech at the felicitation held at the Consulate General of India, Birmingham, on 2 August 2026."
+description_ta: "2026 ஆகஸ்ட் 2 அன்று பர்மிங்காம் இந்தியத் துணைத் தூதரகத்தில் நடைபெற்ற பாராட்டு விழாவில், ஜெயமோகனின் உரைக்குப் பிறகு நிகழ்ந்த கேள்வி-பதில் அமர்வு."
 ---

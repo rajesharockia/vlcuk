@@ -19,7 +19,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-05-29
-cover_image: "/src/assets/images/the-abyss-cover.jpg"
+cover_image: "/src/assets/images/the-abyss-cover.webp"
 reviewer: "Jess Jensen Mitchell"
 source_name: "Full Stop"
 source_url: "https://www.full-stop.net/2026/05/29/reviews/jessjensenmitchell/the-abyss-jeyamohan/"

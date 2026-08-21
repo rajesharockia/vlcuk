@@ -16,7 +16,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-06-30
-cover_image: "/src/assets/images/the-abyss-cover.jpg"
+cover_image: "/src/assets/images/the-abyss-cover.webp"
 reviewer: ""
 source_name: "A Year of Reading the World"
 source_url: "https://ayearofreadingtheworld.com/2026/06/30/book-of-the-month-jeyamohan/"

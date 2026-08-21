@@ -18,7 +18,7 @@ book_title_ta: "ஏழாம் உலகம்"
 author: "Jeyamohan"
 translator: "Suchitra Ramachandran"
 date: 2026-06-08
-cover_image: "/src/assets/images/the-abyss-cover.jpg"
+cover_image: "/src/assets/images/the-abyss-cover.webp"
 reviewer: ""
 source_name: "Necessary Fiction"
 source_url: "https://necessaryfiction.com/reviews/the-abyss/"
