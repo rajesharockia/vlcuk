@@ -1,0 +1,119 @@
+---
+/**
+ * Dedicated English Header Navigation Component.
+ */
+import { t, type UIKey } from '../i18n/ui';
+
+type NavItem = {
+  href: string;
+  key: UIKey;
+  accent?: boolean;
+};
+
+const nav: NavItem[] = [
+  { href: '/discussions/', key: 'nav.discussions' },
+  { href: '/events/', key: 'nav.events' },
+  { href: '/reviews/', key: 'nav.reviews' },
+  { href: '/blog/', key: 'nav.blog' },
+  { href: '/videos/', key: 'nav.videos' },
+  { href: '/contact/', key: 'nav.contact' },
+];
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+
+interface Props {
+  variant?: 'desktop' | 'mobile';
+}
+
+const { variant = 'desktop' } = Astro.props;
+---
+
+{
+  variant === 'desktop' ? (
+    <nav
+      class="hidden min-w-0 md:block"
+      data-lang="en"
+      lang="en"
+      aria-label={t('nav.primary').en}
+    >
+      <ul class="nav-list flex items-center">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class:list={['nav-link-en', item.accent && 'nav-link--accent']}
+            >
+              {t(item.key).en}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  ) : (
+    <ul class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8" data-lang="en" lang="en">
+      {nav.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+            class:list={['nav-link-en', item.accent && 'nav-link--accent']}
+          >
+            {t(item.key).en}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-list > li {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list > li + li::before {
+    content: '|';
+    margin: 0 0.35rem;
+    color: var(--color-rule-strong);
+    font-size: 0.72rem;
+    opacity: 0.55;
+    user-select: none;
+  }
+
+  .nav-link-en {
+    display: inline-block;
+    padding: 0.2rem 0;
+    font-size: 0.88rem;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-ink-muted);
+    border-bottom: 2px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+    white-space: nowrap;
+  }
+
+  .nav-link-en:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link-en[aria-current='page'] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .nav-link--accent {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>

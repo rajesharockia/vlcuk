@@ -277,7 +277,8 @@ import Bilingual from './Bilingual.astro';
       try {
         // @ts-ignore — this module only exists in the built output, so
         // there's nothing on disk for Vite/TypeScript to resolve here.
-        pagefind = (await import(/* @vite-ignore */ '/pagefind/pagefind.js')) as PagefindModule;
+        const url = '/pagefind/pagefind.js';
+        pagefind = (await import(/* @vite-ignore */ url)) as PagefindModule;
         await pagefind.init();
       } catch {
         loadFailed = true;

@@ -11,22 +11,23 @@
  * would only drift out of sync with it.
  */
 import Bilingual from './Bilingual.astro';
+import CountdownTimer from './CountdownTimer.astro';
 
 const FESTIVAL_URL = 'https://www.livingtamillitfest.org/';
 
 const body = {
-  en: 'The Vishnupuram Literary Circle’s festival is coming to London in 2027 — readings, translation panels, and conversations with writers. Programme, dates, and registration are maintained on the festival’s own site.',
-  ta: 'விஷ்ணுபுரம் இலக்கிய வட்டத்தின் திருவிழா 2027ல் லண்டனுக்கு வருகிறது — வாசிப்புகள், மொழிபெயர்ப்புக் கலந்துரையாடல்கள், எழுத்தாளர்களுடன் உரையாடல்கள். நிகழ்ச்சி நிரல், தேதிகள், பதிவு விவரங்கள் திருவிழாவின் சொந்த இணையதளத்தில் புதுப்பிக்கப்படுகின்றன.',
+  en: 'The Vishnupuram Literary Circle’s festival is coming to London on September 11, 2027 — readings, translation panels, and conversations with writers. Programme, dates, and registration are maintained on the festival’s own site.',
+  ta: 'விஷ்ணுபுரம் இலக்கிய வட்டத்தின் திருவிழா செப்டம்பர் 11, 2027 அன்று லண்டனுக்கு வருகிறது — வாசிப்புகள், மொழிபெயர்ப்புக் கலந்துரையாடல்கள், எழுத்தாளர்களுடன் உரையாடல்கள். நிகழ்ச்சி நிரல், தேதிகள், பதிவு விவரங்கள் திருவிழாவின் சொந்த இணையதளத்தில் புதுப்பிக்கப்படுகின்றன.',
 };
 ---
 
 <div class="mx-auto max-w-6xl px-5 sm:px-8">
   <section class="border border-[color:var(--color-rule-strong)] bg-[color:var(--color-paper-deep)] px-7 py-9 sm:px-10 sm:py-11">
-    <p class="eyebrow text-[color:var(--color-accent)]">London 2027</p>
+    <p class="eyebrow text-[color:var(--color-accent)]">London — September 11, 2027</p>
 
     <h2 class="mt-3 text-[1.4rem] font-medium sm:text-[1.7rem]">
       <Bilingual
-        en="Living Tamil Literature Festival"
+        en="Living Tamil Lit Fest"
         ta="வாழும் தமிழ் இலக்கியத் திருவிழா"
       />
     </h2>
@@ -34,6 +35,8 @@ const body = {
     <p class="mt-4 max-w-[var(--measure-wide)] text-[1rem] leading-relaxed text-[color:var(--color-ink-muted)]">
       <Bilingual en={body.en} ta={body.ta} />
     </p>
+
+    <CountdownTimer targetDate="2027-09-11T09:00:00+01:00" />
 
     <a
       href={FESTIVAL_URL}

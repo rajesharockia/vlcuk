@@ -1,0 +1,137 @@
+﻿---
+/**
+ * Dedicated Tamil Header Navigation Component.
+ */
+import { t, type UIKey } from '../i18n/ui';
+
+type NavItem = {
+  href: string;
+  key: UIKey;
+  accent?: boolean;
+};
+
+const nav: NavItem[] = [
+  { href: '/discussions/', key: 'nav.discussions' },
+  { href: '/events/', key: 'nav.events' },
+  { href: '/reviews/', key: 'nav.reviews' },
+  { href: '/blog/', key: 'nav.blog' },
+  { href: '/videos/', key: 'nav.videos' },
+  { href: '/contact/', key: 'nav.contact' },
+];
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+
+interface Props {
+  variant?: 'desktop' | 'mobile';
+}
+
+const { variant = 'desktop' } = Astro.props;
+---
+
+{
+  variant === 'desktop' ? (
+    <nav
+      class="hidden min-w-0 md:block"
+      data-lang="ta"
+      lang="ta"
+      aria-label={t('nav.primary').ta}
+    >
+      <ul class="nav-list flex items-center">
+        {nav.map((item) => {
+          const taWords = t(item.key).ta.split(' ');
+          return (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class:list={['nav-link-ta', item.accent && 'nav-link--accent']}
+              >
+                {taWords.map((word, idx) => (
+                  <span class="nav-word">{word}{idx < taWords.length - 1 ? ' ' : ''}</span>
+                ))}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  ) : (
+    <ul class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8" data-lang="ta" lang="ta">
+      {nav.map((item) => {
+        const taWords = t(item.key).ta.split(' ');
+        return (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class:list={['nav-link-ta', item.accent && 'nav-link--accent']}
+            >
+              {taWords.map((word, idx) => (
+                <span class="nav-word">{word}{idx < taWords.length - 1 ? ' ' : ''}</span>
+              ))}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}
+
+<style>
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-list > li {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list > li + li::before {
+    content: '|';
+    margin: 0 0.35rem;
+    color: var(--color-rule-strong);
+    font-size: 0.72rem;
+    opacity: 0.55;
+    user-select: none;
+  }
+
+  .nav-link-ta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0;
+    font-size: 0.74rem;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-ink-muted);
+    border-bottom: 2px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+    max-width: 5rem;
+  }
+
+  .nav-link-ta:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link-ta[aria-current='page'] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .nav-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .nav-link--accent {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>

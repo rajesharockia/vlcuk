@@ -1,0 +1,148 @@
+---
+/**
+ * HeaderTimer component — slim top banner countdown timer for Living Tamil Lit Fest, London.
+ */
+import Bilingual from './Bilingual.astro';
+
+interface Props {
+  targetDate?: string;
+}
+
+const { targetDate = '2027-09-11T09:00:00+01:00' } = Astro.props;
+const FESTIVAL_URL = 'https://www.livingtamillitfest.org/';
+---
+
+<div class="litfest-header-banner" data-header-timer-target={targetDate}>
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-center gap-0 px-4 py-0.5 sm:px-8">
+    <a href={FESTIVAL_URL} target="_blank" rel="noopener noreferrer" class="litfest-header-banner__title">
+      <span class="litfest-header-banner__badge">
+        <Bilingual en="Living Tamil Fest" ta="லிவிங் தமிழ் விழா" />
+      </span>
+      <span class="litfest-header-banner__arrow">↗</span>
+    </a>
+
+    <div class="litfest-header-banner__timer" data-header-timer-box>
+      <span class="litfest-header-banner__unit"><strong data-ht-days>00</strong><span class="litfest-header-banner__suffix"><Bilingual en="d" ta="நா" /></span></span>
+      <span class="litfest-header-banner__sep">:</span>
+      <span class="litfest-header-banner__unit"><strong data-ht-hours>00</strong><span class="litfest-header-banner__suffix"><Bilingual en="h" ta="ம" /></span></span>
+      <span class="litfest-header-banner__sep">:</span>
+      <span class="litfest-header-banner__unit"><strong data-ht-minutes>00</strong><span class="litfest-header-banner__suffix"><Bilingual en="m" ta="நி" /></span></span>
+      <span class="litfest-header-banner__sep">:</span>
+      <span class="litfest-header-banner__unit"><strong data-ht-seconds>00</strong><span class="litfest-header-banner__suffix"><Bilingual en="s" ta="வி" /></span></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .litfest-header-banner {
+    background-color: var(--color-paper-deep);
+    border-bottom: 1px solid var(--color-rule);
+    font-size: 0.82rem;
+    line-height: 1.15;
+  }
+
+  :global(html[data-lang='ta']) .litfest-header-banner {
+    font-size: 0.78rem;
+  }
+
+  .litfest-header-banner__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .litfest-header-banner__title:hover {
+    color: var(--color-accent);
+  }
+
+  .litfest-header-banner__badge {
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .litfest-header-banner__date {
+    color: var(--color-ink-muted);
+  }
+
+  .litfest-header-banner__arrow {
+    font-size: 0.75rem;
+    opacity: 0.75;
+  }
+
+  .litfest-header-banner__timer {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-serif-en), Georgia, serif;
+    font-size: 0.82rem;
+    line-height: 1.15;
+    color: var(--color-ink);
+  }
+
+  :global(html[data-lang='ta']) .litfest-header-banner__timer {
+    font-size: 0.78rem;
+  }
+
+  .litfest-header-banner__unit strong {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent-deep);
+  }
+
+  .litfest-header-banner__suffix {
+    font-size: 0.82rem;
+    margin-left: 1px;
+    color: var(--color-ink-muted);
+  }
+
+  .litfest-header-banner__sep {
+    color: var(--color-rule-strong);
+    user-select: none;
+  }
+</style>
+
+<script>
+  function initHeaderTimer(banner: HTMLElement) {
+    const targetStr = banner.dataset.headerTimerTarget;
+    if (!targetStr) return;
+
+    const targetTime = new Date(targetStr).getTime();
+    if (isNaN(targetTime)) return;
+
+    const daysEl = banner.querySelector<HTMLElement>('[data-ht-days]');
+    const hoursEl = banner.querySelector<HTMLElement>('[data-ht-hours]');
+    const minutesEl = banner.querySelector<HTMLElement>('[data-ht-minutes]');
+    const secondsEl = banner.querySelector<HTMLElement>('[data-ht-seconds]');
+    const timerBox = banner.querySelector<HTMLElement>('[data-header-timer-box]');
+
+    function pad(num: number): string {
+      return num < 10 ? '0' + num : String(num);
+    }
+
+    function update() {
+      const diff = targetTime - Date.now();
+      if (diff <= 0) {
+        if (timerBox) timerBox.textContent = 'Live!';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      if (daysEl) daysEl.textContent = pad(days);
+      if (hoursEl) hoursEl.textContent = pad(hours);
+      if (minutesEl) minutesEl.textContent = pad(minutes);
+      if (secondsEl) secondsEl.textContent = pad(seconds);
+    }
+
+    update();
+    setInterval(update, 1000);
+  }
+
+  document.querySelectorAll<HTMLElement>('.litfest-header-banner').forEach(initHeaderTimer);
+</script>

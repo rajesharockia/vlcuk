@@ -1,0 +1,188 @@
+---
+/**
+ * Countdown Timer component for upcoming events like LitFest London.
+ *
+ * Displays Days, Hours, Minutes, and Seconds counting down to a target ISO date.
+ * Features bilingual unit labels and updates live client-side every second.
+ */
+import Bilingual from './Bilingual.astro';
+
+interface Props {
+  targetDate?: string;
+}
+
+const { targetDate = '2026-09-11T09:00:00+01:00' } = Astro.props;
+---
+
+<div class="countdown-timer" data-target-date={targetDate}>
+  <div class="countdown-timer__grid">
+    <div class="countdown-timer__item">
+      <span class="countdown-timer__number" data-cd-days>00</span>
+      <span class="countdown-timer__label">
+        <Bilingual en="Days" ta="நாட்கள்" />
+      </span>
+    </div>
+
+    <div class="countdown-timer__divider" aria-hidden="true">:</div>
+
+    <div class="countdown-timer__item">
+      <span class="countdown-timer__number" data-cd-hours>00</span>
+      <span class="countdown-timer__label">
+        <Bilingual en="Hours" ta="மணிநேரம்" />
+      </span>
+    </div>
+
+    <div class="countdown-timer__divider" aria-hidden="true">:</div>
+
+    <div class="countdown-timer__item">
+      <span class="countdown-timer__number" data-cd-minutes>00</span>
+      <span class="countdown-timer__label">
+        <Bilingual en="Minutes" ta="நிமிடங்கள்" />
+      </span>
+    </div>
+
+    <div class="countdown-timer__divider" aria-hidden="true">:</div>
+
+    <div class="countdown-timer__item">
+      <span class="countdown-timer__number" data-cd-seconds>00</span>
+      <span class="countdown-timer__label">
+        <Bilingual en="Seconds" ta="வினாடிகள்" />
+      </span>
+    </div>
+  </div>
+
+  <p class="countdown-timer__finished hidden" data-cd-finished>
+    <Bilingual en="The festival has begun!" ta="திருவிழா தொடங்கியது!" />
+  </p>
+</div>
+
+<style>
+  .countdown-timer {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .countdown-timer__grid {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 640px) {
+    .countdown-timer__grid {
+      gap: 1rem;
+    }
+  }
+
+  .countdown-timer__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.2rem;
+    padding: 0.6rem 0.75rem;
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 2px;
+  }
+
+  @media (min-width: 640px) {
+    .countdown-timer__item {
+      min-width: 5rem;
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  .countdown-timer__number {
+    font-family: var(--font-serif-en), Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 640px) {
+    .countdown-timer__number {
+      font-size: 1.8rem;
+    }
+  }
+
+  .countdown-timer__label {
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .countdown-timer__divider {
+    font-family: var(--font-serif-en), Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-rule-strong);
+    user-select: none;
+  }
+
+  @media (max-width: 480px) {
+    .countdown-timer__divider {
+      display: none;
+    }
+  }
+
+  .countdown-timer__finished {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  function initTimer(container: HTMLElement) {
+    const targetStr = container.dataset.targetDate;
+    if (!targetStr) return;
+
+    const targetTime = new Date(targetStr).getTime();
+    if (isNaN(targetTime)) return;
+
+    const daysEl = container.querySelector<HTMLElement>('[data-cd-days]');
+    const hoursEl = container.querySelector<HTMLElement>('[data-cd-hours]');
+    const minutesEl = container.querySelector<HTMLElement>('[data-cd-minutes]');
+    const secondsEl = container.querySelector<HTMLElement>('[data-cd-seconds]');
+    const finishedEl = container.querySelector<HTMLElement>('[data-cd-finished]');
+    const gridEl = container.querySelector<HTMLElement>('.countdown-timer__grid');
+
+    function pad(num: number): string {
+      return num < 10 ? '0' + num : String(num);
+    }
+
+    function update() {
+      const now = Date.now();
+      const diff = targetTime - now;
+
+      if (diff <= 0) {
+        if (gridEl) gridEl.style.display = 'none';
+        if (finishedEl) finishedEl.classList.remove('hidden');
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      if (daysEl) daysEl.textContent = pad(days);
+      if (hoursEl) hoursEl.textContent = pad(hours);
+      if (minutesEl) minutesEl.textContent = pad(minutes);
+      if (secondsEl) secondsEl.textContent = pad(seconds);
+    }
+
+    update();
+    setInterval(update, 1000);
+  }
+
+  document.querySelectorAll<HTMLElement>('.countdown-timer').forEach(initTimer);
+</script>
+

@@ -2,75 +2,28 @@
 import SiteLogo from './SiteLogo.astro';
 import LanguageToggle from './LanguageToggle.astro';
 import SearchBar from './SearchBar.astro';
+import HeaderTimer from './HeaderTimer.astro';
+import HeaderNavEN from './HeaderNavEN.astro';
+import HeaderNavTA from './HeaderNavTA.astro';
 import Bilingual from './Bilingual.astro';
-import { t, type UIKey } from '../i18n/ui';
-
-type NavItem = {
-  href: string;
-  key: UIKey;
-  /** Picks up the accent colour, to keep the Donate link prominent. */
-  accent?: boolean;
-};
-
-const nav: NavItem[] = [
-  { href: '/discussions/', key: 'nav.discussions' },
-  { href: '/events/', key: 'nav.events' },
-  { href: '/reviews/', key: 'nav.reviews' },
-  { href: '/blog/', key: 'nav.blog' },
-  { href: '/videos/', key: 'nav.videos' },
-  // Donate is deliberately not linked anywhere on the site right now — not
-  // needed at the moment. The page itself (src/pages/donate.astro) is still
-  // there, untouched, just unlinked, so it's a one-line change to bring back.
-  { href: '/contact/', key: 'nav.contact' },
-];
-
-const path = Astro.url.pathname;
-const isCurrent = (href: string) => path === href || path.startsWith(href);
+import { t } from '../i18n/ui';
 ---
 
 <header class="border-b border-[color:var(--color-rule)]">
-  {/*
-    One compact row at md+, grouped the way iplt20.com's header is: logo and
-    nav links clustered together on the left, with the language toggle and
-    (below md) the menu button pushed to the far right — two flex groups with
-    space between them, not three items spread evenly across the bar, which
-    is what left the nav stranded in the middle rather than beside the logo.
-    Below md there isn't room for the nav links on one line at all, so they
-    move into a JS-toggled dropdown and only the logo, toggle, and hamburger
-    stay in the compact bar.
-  */}
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 sm:px-8 sm:py-2.5">
-    <div class="flex min-w-0 items-center gap-6 lg:gap-10">
+    <div class="flex min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
       <a href="/" class="min-w-0 shrink-0" aria-label="Vishnupuram UK — home">
         <SiteLogo variant="header" eager />
       </a>
 
-      <nav
-        class="hidden min-w-0 md:block"
-        aria-label={`${t('nav.primary').en} / ${t('nav.primary').ta}`}
-      >
-        <ul class="flex items-center gap-5 lg:gap-7">
-          {
-            nav.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  aria-current={isCurrent(item.href) ? 'page' : undefined}
-                  class:list={['nav-link', item.accent && 'nav-link--accent']}
-                >
-                  <Bilingual k={item.key} />
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-
-      {/* Search sits right after Contact, the last item in the nav list. */}
-      <SearchBar />
+      <!-- Desktop Primary Navs -->
+      <HeaderNavEN variant="desktop" />
+      <HeaderNavTA variant="desktop" />
     </div>
 
-    <div class="flex shrink-0 items-center gap-3 sm:gap-6">
+    <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+      <HeaderTimer targetDate="2027-09-11T09:00:00+01:00" />
+      <SearchBar />
       <LanguageToggle />
 
       {/*
@@ -105,21 +58,9 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     class="nav-panel border-t border-[color:var(--color-rule)] md:hidden"
     aria-label={`${t('nav.primary').en} / ${t('nav.primary').ta}`}
   >
-    <ul class="mx-auto flex max-w-6xl flex-col gap-0 px-5 py-2 sm:px-8">
-      {
-        nav.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              aria-current={isCurrent(item.href) ? 'page' : undefined}
-              class:list={['nav-link', item.accent && 'nav-link--accent']}
-            >
-              <Bilingual k={item.key} />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <!-- Mobile Primary Navs -->
+    <HeaderNavEN variant="mobile" />
+    <HeaderNavTA variant="mobile" />
   </nav>
 </header>
 
@@ -137,35 +78,19 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     cursor: pointer;
   }
 
-  .nav-link {
-    display: block;
-    padding: 0.6rem 0;
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    color: var(--color-ink-muted);
-    border-bottom: 1px solid transparent;
-    transition: color 150ms ease, border-color 150ms ease;
+  /* Separate language display rules */
+  :global(html[data-lang='en']) [data-lang='ta'] {
+    display: none !important;
   }
 
-  .nav-link:hover {
-    color: var(--color-accent);
-  }
-
-  .nav-link[aria-current='page'] {
-    color: var(--color-ink);
-    border-bottom-color: var(--color-accent);
-  }
-
-  .nav-link--accent {
-    color: var(--color-accent);
-    font-weight: 600;
+  :global(html[data-lang='ta']) [data-lang='en'] {
+    display: none !important;
   }
 
   /* Mobile: the nav collapses only when JavaScript is available to reopen it.
      Without JS the `is-collapsed` class is never added and the list stays
      visible, so navigation always works. */
-  @media (max-width: 47.99rem) {
+  @media (max-width: 79.99rem) {
     .nav-panel.is-collapsed {
       display: none;
     }
