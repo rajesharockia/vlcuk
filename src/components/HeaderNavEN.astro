@@ -16,6 +16,7 @@ const nav: NavItem[] = [
   { href: '/reviews/', key: 'nav.reviews' },
   { href: '/blog/', key: 'nav.blog' },
   { href: '/videos/', key: 'nav.videos' },
+  { href: '/about/', key: 'nav.about' },
   { href: '/contact/', key: 'nav.contact' },
 ];
 
@@ -82,7 +83,7 @@ const { variant = 'desktop' } = Astro.props;
 
   .nav-list > li + li::before {
     content: '|';
-    margin: 0 0.35rem;
+    margin: 0 0.3rem;
     color: var(--color-rule-strong);
     font-size: 0.72rem;
     opacity: 0.55;
@@ -92,7 +93,7 @@ const { variant = 'desktop' } = Astro.props;
   .nav-link-en {
     display: inline-block;
     padding: 0.2rem 0;
-    font-size: 0.88rem;
+    font-size: 0.84rem;
     line-height: 1.15;
     letter-spacing: 0.01em;
     text-align: center;
@@ -101,6 +102,15 @@ const { variant = 'desktop' } = Astro.props;
     border-bottom: 2px solid transparent;
     transition: color 150ms ease, border-color 150ms ease;
     white-space: nowrap;
+  }
+
+  @media (min-width: 68rem) {
+    .nav-list > li + li::before {
+      margin: 0 0.35rem;
+    }
+    .nav-link-en {
+      font-size: 0.88rem;
+    }
   }
 
   .nav-link-en:hover {

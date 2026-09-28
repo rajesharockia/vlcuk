@@ -19,9 +19,12 @@ export const ui = {
   'nav.reviews': { en: 'Book Reviews', ta: 'நூல் மதிப்புரைகள்' },
   'nav.blog': { en: 'Articles', ta: 'கட்டுரைகள்' },
   'nav.videos': { en: 'Videos', ta: 'காணொளிகள்' },
+  'nav.about': { en: 'About Us', ta: 'எங்களைப் பற்றி' },
   'nav.contact': { en: 'Contact', ta: 'தொடர்பு' },
   'nav.menu': { en: 'Menu', ta: 'பட்டி' },
   'nav.primary': { en: 'Primary', ta: 'முதன்மை' },
+  'about.title': { en: 'About Us', ta: 'எங்களைப் பற்றி' },
+  'about.team': { en: 'Our Team', ta: 'எங்கள் குழு' },
 
   'search.open': { en: 'Search', ta: 'தேடல்' },
   'search.close': { en: 'Close search', ta: 'தேடலை மூடு' },
